@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">PagingSample</string>
+
+    <string name="paging3_title">Paging 3</string>
+    <string name="custom_pager_title">Custom pager</string>
+    <string name="both_title">Both</string>
+    <string name="add">Добавить</string>
+    <string name="remove">Удалить</string>
+    <string name="settings">Настройки</string>
+    <string name="rename">Переименовать</string>
+    <string name="delete">Удалить</string>
+    <string name="init_server">Инициализировать сервер</string>
+
+    <string name="add_one_cat">Добавить 1 кота</string>
+    <string name="add_100_cats">Добавить 100 котов</string>
+    <string name="clear_local_db">Очистить локальную БД</string>
+    <string name="clear_all_user_cats">Очистить всех котов</string>
+</resources>
