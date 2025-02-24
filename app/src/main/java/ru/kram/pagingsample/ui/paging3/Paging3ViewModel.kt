@@ -64,8 +64,6 @@ class Paging3ViewModel(
                 age = it.age,
                 createdAt = it.createdAt,
             )
-        }.filter {
-            it.name == "Lucky"
         }
     }.cachedIn(viewModelScope)
 

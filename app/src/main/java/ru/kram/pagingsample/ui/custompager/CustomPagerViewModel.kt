@@ -28,10 +28,9 @@ class CustomPagerViewModel(
         pageSize = PAGE_SIZE,
         maxPagesToKeep = 3,
         threshold = PAGE_SIZE / 2,
-        keyByIndex = { index, size -> index / size },
-        primaryDataSource = object: DataSource<CatItemData, Int> {
-            override suspend fun loadData(key: Int?, loadSize: Int): Page<CatItemData, Int> {
-                val key = key ?: 0
+        primaryDataSource = object: DataSource<CatItemData> {
+            override suspend fun loadData(page: Int?, loadSize: Int): Page<CatItemData> {
+                val key = page ?: 0
                 val items = catLocalDao.getCats(limit = loadSize, offset = loadSize * key).map {
                     CatItemData(
                         id = it.id,
@@ -45,14 +44,14 @@ class CustomPagerViewModel(
                 Timber.d("primary: key=$key, loadSize=$loadSize, items=${items.joinToString(",") { it.name }}")
                 return Page(
                     data = items,
-                    prevKey = if (key == 0) null else key - 1,
-                    nextKey = if (items.size < loadSize) null else key + 1,
+                    prevPage = if (key == 0) null else key - 1,
+                    nextPage = if (items.size < loadSize) null else key + 1,
                 )
             }
         },
-        secondaryDataSource = object: DataSource<CatItemData, Int> {
-            override suspend fun loadData(key: Int?, loadSize: Int): Page<CatItemData, Int> {
-                val key = key ?: 0
+        secondaryDataSource = object: DataSource<CatItemData> {
+            override suspend fun loadData(page: Int?, loadSize: Int): Page<CatItemData> {
+                val key = page ?: 0
                 val items = catsRemoteDataSource.getCats(limit = loadSize, offset = loadSize * key).map {
                     CatItemData(
                         id = it.id,
@@ -78,8 +77,8 @@ class CustomPagerViewModel(
                 Timber.d("secondary: key=$key, loadSize=$loadSize, items=${items.joinToString(",") { it.name }}")
                 return Page(
                     data = items,
-                    prevKey = if (key == 0) null else key - 1,
-                    nextKey = if (items.size < loadSize) null else key + 1,
+                    prevPage = if (key == 0) null else key - 1,
+                    nextPage = if (items.size < loadSize) null else key + 1,
                 )
             }
         }

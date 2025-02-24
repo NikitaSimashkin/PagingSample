@@ -78,7 +78,7 @@ class CatsRemoteDataSource(
 
     private suspend fun addCats(
         amount: Int,
-        random: Boolean = false,
+        random: Boolean = true,
         createdAt: () -> Long,
     ): List<CatDTO> = roomTransactionHelper.withTransaction {
         val allCatIds = catPersistentDao.getAllIds().toSet()
