@@ -7,4 +7,5 @@ data class CatItemData(
     val breed: String,
     val age: Int,
     val createdAt: Long,
+    val number: Int,
 )

@@ -14,9 +14,11 @@ fun BothScreen(
     Row {
         CustomPagerScreen(
             modifier = modifier.weight(1f),
+            smallCats = true,
         )
         Paging3Screen(
             modifier = modifier.weight(1f),
+            smallCats = true,
         )
     }
 }

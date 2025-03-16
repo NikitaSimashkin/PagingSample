@@ -16,7 +16,9 @@ val commonPagingModule = module {
             androidContext(),
             CatLocalDatabase::class.java,
             CatLocalDatabase.DATABASE_NAME
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     single {

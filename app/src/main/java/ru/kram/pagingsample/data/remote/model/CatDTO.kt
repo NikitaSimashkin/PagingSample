@@ -7,4 +7,5 @@ data class CatDTO(
     val breed: String,
     val createdAt: Long,
     val age: Int,
+    val number: Int,
 )

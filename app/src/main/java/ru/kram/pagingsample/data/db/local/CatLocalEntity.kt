@@ -16,4 +16,5 @@ data class CatLocalEntity(
     val age: Int,
     val imageUrl: String,
     val createdAt: Long,
+    val number: Int,
 )

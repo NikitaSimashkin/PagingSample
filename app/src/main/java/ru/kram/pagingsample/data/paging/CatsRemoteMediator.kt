@@ -56,7 +56,8 @@ class CatsRemoteMediator(
                         name = it.name,
                         breed = it.breed,
                         age = it.age,
-                        createdAt = it.createdAt
+                        createdAt = it.createdAt,
+                        number = it.number,
                     )
                 }
             )

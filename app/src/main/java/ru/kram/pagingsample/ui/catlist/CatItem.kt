@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -43,7 +42,8 @@ fun CatItem(
     catItemData: CatItemData,
     onDeleteClick: (catId: String) -> Unit,
     onRenameClick: (catId: String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showOnlyNumber: Boolean = false
 ) {
     Row(
         modifier = modifier
@@ -67,21 +67,34 @@ fun CatItem(
                 .padding(end = 8.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(
-                text = "Name: ${catItemData.name}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Colors.textPrimary,
-            )
-            Text(
-                text = "Breed: ${catItemData.breed}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Colors.textPrimary,
-            )
-            Text(
-                text = "Age: ${catItemData.age}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Colors.textPrimary,
-            )
+            if (showOnlyNumber) {
+                Text(
+                    text = "${catItemData.number}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Colors.textPrimary,
+                )
+            } else {
+                Text(
+                    text = "Name: ${catItemData.name}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Colors.textPrimary,
+                )
+                Text(
+                    text = "Breed: ${catItemData.breed}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Colors.textPrimary,
+                )
+//            Text(
+//                text = "Age: ${catItemData.age}",
+//                style = MaterialTheme.typography.bodyMedium,
+//                color = Colors.textPrimary,
+//            )
+                Text(
+                    text = "Number: ${catItemData.number}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Colors.textPrimary,
+                )
+            }
         }
 
         Box(
@@ -169,6 +182,7 @@ private fun CatItemPreview() {
                     breed = "British Shorthair",
                     age = 2,
                     createdAt = System.currentTimeMillis(),
+                    number = 1,
                 ),
                 onDeleteClick = { },
                 onRenameClick = { }

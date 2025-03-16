@@ -54,5 +54,7 @@ private fun getServerDatabase(
         context,
         CatServerDatabase::class.java,
         CatServerDatabase.DATABASE_NAME
-    ).build()
+    )
+        .fallbackToDestructiveMigration()
+        .build()
 }

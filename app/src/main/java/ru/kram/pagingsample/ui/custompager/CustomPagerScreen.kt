@@ -3,6 +3,7 @@ package ru.kram.pagingsample.ui.custompager
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -21,6 +22,7 @@ import ru.kram.pagingsample.ui.catlist.CatListBaseScreen
 @Composable
 fun CustomPagerScreen(
     modifier: Modifier = Modifier,
+    smallCats: Boolean = false,
 ) {
     val viewModel = koinViewModel<CustomPagerViewModel>()
     val state by viewModel.screenState.collectAsStateWithLifecycle()
@@ -36,9 +38,12 @@ fun CustomPagerScreen(
         onClearLocalDb = viewModel::clearLocalDb,
         modifier = modifier,
     ) {
-        val cats by viewModel.cats.collectAsStateWithLifecycle()
-        LaunchedEffect(cats) {
-            viewModel.updateListInfo(cats.size, cats)
+        val cats = viewModel.cats.collectAsStateWithLifecycle()
+
+        LaunchedEffect(Unit) {
+            snapshotFlow {
+                viewModel.updateListInfo(cats.value.size, cats.value)
+            }.collect {}
         }
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -47,31 +52,31 @@ fun CustomPagerScreen(
             state = scrollState,
         ) {
             items(
-                count = cats.size,
-                key = { index -> cats[index]?.id ?: index },
+                count = cats.value.size,
+                key = { index -> cats.value[index].id },
             ) { index ->
-                val cat = cats[index]
-                if (cat != null) {
-                    CatItem(
-                        catItemData = cat,
-                        onDeleteClick = { viewModel.deleteCat(cat) },
-                        onRenameClick = {},
-                    )
-                }
+                val cat = cats.value[index]
+                CatItem(
+                    catItemData = cat,
+                    onDeleteClick = { viewModel.deleteCat(cat) },
+                    onRenameClick = {},
+                    showOnlyNumber = smallCats,
+                    modifier = if (smallCats) Modifier.height(75.dp) else Modifier
+                )
             }
         }
-    }
 
-    PagerObserver(
-        lazyListState = scrollState,
-        onIndexChanged = viewModel::onIndexChanged,
-    )
+        PagerObserver(
+            lazyListState = scrollState,
+            onIndexVisible = viewModel::onItemVisible,
+        )
+    }
 }
 
 @Composable
 fun PagerObserver(
     lazyListState: LazyListState,
-    onIndexChanged: (Int) -> Unit,
+    onIndexVisible: (Int) -> Unit,
 ) {
     LaunchedEffect(lazyListState) {
         snapshotFlow {
@@ -85,8 +90,8 @@ fun PagerObserver(
             }
         }.onStart {
             emit(0)
-        }.collect { visibleIndex ->
-            onIndexChanged(visibleIndex)
+        }.collect { visibleCat ->
+            onIndexVisible(visibleCat)
         }
     }
 }

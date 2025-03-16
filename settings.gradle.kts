@@ -16,4 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "PagingSample"
 include(":app")
- 
+include(":niksi")

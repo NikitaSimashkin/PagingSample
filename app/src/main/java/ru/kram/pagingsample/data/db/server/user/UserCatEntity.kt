@@ -18,4 +18,5 @@ import ru.kram.pagingsample.data.db.server.persistent.CatPersistentEntity
 data class UserCatEntity(
     @PrimaryKey val catId: String,
     val createdAt: Long,
+    val number: Int,
 )

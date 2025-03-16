@@ -63,6 +63,7 @@ class Paging3ViewModel(
                 breed = it.breed,
                 age = it.age,
                 createdAt = it.createdAt,
+                number = it.number,
             )
         }
     }.cachedIn(viewModelScope)
@@ -98,7 +99,7 @@ class Paging3ViewModel(
 
     fun onAddOneCats() {
         viewModelScope.launch {
-            catsRepository.addCat(System.currentTimeMillis())
+            catsRepository.addCat()
         }
     }
 

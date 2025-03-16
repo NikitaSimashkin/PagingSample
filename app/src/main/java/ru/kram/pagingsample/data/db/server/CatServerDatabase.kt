@@ -12,7 +12,7 @@ import ru.kram.pagingsample.data.db.server.user.UserCatEntity
         CatPersistentEntity::class,
         UserCatEntity::class,
     ],
-    version = 1
+    version = 2
 )
 abstract class CatServerDatabase : RoomDatabase() {
     abstract fun catPersistentDao(): CatPersistentDao

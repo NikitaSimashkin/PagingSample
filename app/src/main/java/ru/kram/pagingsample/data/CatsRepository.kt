@@ -25,8 +25,8 @@ class CatsRepository(
         catLocalDao.deleteCat(id)
     }
 
-    suspend fun addCat(createdAt: Long) = dispatchers.io {
-        val catDTO = catsRemoteDataSource.addCat(createdAt)
+    suspend fun addCat() = dispatchers.io {
+        val catDTO = catsRemoteDataSource.addCat()
         val mappedCat = catDTO?.let {
             CatLocalEntity(
                 id = it.id,
@@ -35,6 +35,7 @@ class CatsRepository(
                 breed = it.breed,
                 age = it.age,
                 createdAt = it.createdAt,
+                number = it.number,
             )
         }
         Timber.d("addCat: $mappedCat")
@@ -51,6 +52,7 @@ class CatsRepository(
                 breed = it.breed,
                 age = it.age,
                 createdAt = it.createdAt,
+                number = it.number,
             )
         }
         Timber.d("addCats: amountWanted=$amount, amountAdded=${mappedCats.size}")

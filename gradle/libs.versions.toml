@@ -13,6 +13,8 @@ decompose = "2.2.3"
 koin = "3.5.6"
 lifecycle = "2.8.7"
 paging = "3.3.5"
+appcompat = "1.7.0"
+material = "1.12.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +53,8 @@ paging_compose = { module = "androidx.paging:paging-compose", version.ref = "pag
 paging_room = { module = "androidx.room:room-paging", version.ref = "room" }
 
 coil = { module = "io.coil-kt:coil-compose", version = "2.7.0" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -58,6 +62,7 @@ kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version = "2.0.21-1.0.28" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.1.0" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 
 [bundles]
 

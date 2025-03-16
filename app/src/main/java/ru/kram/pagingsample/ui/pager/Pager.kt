@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.selects.select
 import timber.log.Timber
-import java.util.concurrent.ConcurrentHashMap
+import java.util.TreeMap
 
 interface DataSource<T> {
     suspend fun loadData(page: Int?, loadSize: Int): Page<T>
@@ -27,16 +27,16 @@ class Pager<T>(
     private val threshold: Int,
     private val maxPagesToKeep: Int,
 ) {
-    private val loadedPagesMap = ConcurrentHashMap<Int, Page<T>>()
+    private val loadedPagesMap = TreeMap<Int, Page<T>>()
 
     private val _pagingFlow = MutableStateFlow<List<T?>>(emptyList())
-    val pagingFlow: StateFlow<List<T?>> get() = _pagingFlow
+    val pagingFlow: StateFlow<List<T?>> = _pagingFlow
 
     private var currentAnchorIndex: Int = 0
 
     private fun updateFlow() {
         Timber.d("updateFlow")
-        val pages = getSortedPages()
+        val pages = loadedPagesMap.values
         if (pages.isEmpty()) {
             _pagingFlow.value = emptyList()
             return
@@ -117,7 +117,7 @@ class Pager<T>(
 
     private fun loadedDataRange(): Pair<Int, Int> {
         Timber.d("loadedDataRange")
-        val pages = getSortedPages()
+        val pages = loadedPagesMap.values
         if (pages.isEmpty()) return 0 to -1
         val start = pages.first().itemsBefore ?: 0
         val totalData = pages.sumOf { it.data.size }
@@ -126,7 +126,7 @@ class Pager<T>(
 
     private fun currentPageIndex(visibleIndex: Int): Int? {
         Timber.d("currentPageIndex: $visibleIndex")
-        val pages = getSortedPages()
+        val pages = loadedPagesMap.values
         if (pages.isEmpty()) return null
         var offset = visibleIndex - (pages.first().itemsBefore ?: 0)
         if (offset < 0) return null
@@ -154,7 +154,23 @@ class Pager<T>(
         updateFlow()
     }
 
-    suspend fun updateVisibleIndex(visibleIndex: Int) {
+    private fun findGlobalIndexForItem(item: T?): Int? {
+        val pages = loadedPagesMap.values
+        var globalIndex = 0
+        for (page in pages) {
+            val index = page.data.indexOf(item)
+            if (index != -1) {
+                return globalIndex + index
+            } else {
+                globalIndex += page.data.size
+            }
+        }
+
+        return null
+    }
+
+    suspend fun updateVisibleItem(item: T?) {
+        val visibleIndex = findGlobalIndexForItem(item) ?: 0
         currentAnchorIndex = visibleIndex
         ensureInitialPage()
         updateFlow()
@@ -192,9 +208,5 @@ class Pager<T>(
             loadedPagesMap[key] = refreshed
         }
         updateFlow()
-    }
-
-    private fun getSortedPages(): List<Page<T>> {
-        return loadedPagesMap.entries.sortedBy { it.key }.map { it.value }
     }
 }

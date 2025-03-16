@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
     entities = [
         CatLocalEntity::class,
     ],
-    version = 1
+    version = 2
 )
 abstract class CatLocalDatabase : RoomDatabase() {
     abstract fun catLocalDao(): CatLocalDao

@@ -15,12 +15,12 @@ class CatsRemoteDataSource(
         userCatDao.deleteAll()
     }
 
-    suspend fun getCats(limit: Int, offset: Int): List<CatDTO> {
+    suspend fun getCats(limit: Int, offset: Int): List<CatDTO> = roomTransactionHelper.withTransaction {
         val userCats = userCatDao.getUserCats(limit = limit, offset = offset)
         val userCatsIds = userCats.mapTo(mutableSetOf()) { it.catId }
         val cats = catPersistentDao.getByIds(userCatsIds).associateBy { it.id }
 
-        return userCats.map { userCat ->
+        return@withTransaction userCats.map { userCat ->
             val cat = cats[userCat.catId] ?: return@map null
 
             CatDTO(
@@ -30,6 +30,7 @@ class CatsRemoteDataSource(
                 breed = cat.breed,
                 createdAt = userCat.createdAt,
                 age = cat.age,
+                number = userCat.number,
             )
         }.filterNotNull()
     }
@@ -60,26 +61,25 @@ class CatsRemoteDataSource(
                 breed = cat.breed,
                 createdAt = userCat.createdAt,
                 age = cat.age,
+                number = userCat.number,
             )
         }.filterNotNull()
     }
 
-    suspend fun addCat(createdAt: Long): CatDTO? {
-        return addCats(1) { createdAt }.firstOrNull()
+    suspend fun addCat(): CatDTO? {
+        return addCats(1).firstOrNull()
     }
 
     suspend fun addCats(amount: Int): List<CatDTO> {
-        return addCats(amount) { System.currentTimeMillis() }
+        return addCatsInternal(amount)
     }
 
     suspend fun deleteCat(id: String) = roomTransactionHelper.withTransaction {
         userCatDao.deleteCat(id)
     }
 
-    private suspend fun addCats(
+    private suspend fun addCatsInternal(
         amount: Int,
-        random: Boolean = true,
-        createdAt: () -> Long,
     ): List<CatDTO> = roomTransactionHelper.withTransaction {
         val allCatIds = catPersistentDao.getAllIds().toSet()
         val existingUserCatIds = userCatDao.getAllIds().toSet()
@@ -87,12 +87,13 @@ class CatsRemoteDataSource(
         val availableCats = allCatIds - existingUserCatIds
         if (availableCats.isEmpty()) return@withTransaction emptyList()
 
-        val selectedCatsIds = (if (random) availableCats.shuffled() else availableCats.sorted()).take(amount)
+        val selectedCatsIds = availableCats.shuffled().take(amount)
         val selectedCats = selectedCatsIds
             .mapIndexed { index, id ->
                 UserCatEntity(
                     catId = id,
-                    createdAt = createdAt() + index
+                    createdAt = System.currentTimeMillis() + index,
+                    number = existingUserCatIds.size + index,
                 )
             }.associateBy { it.catId }
 
@@ -108,6 +109,7 @@ class CatsRemoteDataSource(
                 breed = it.breed,
                 createdAt = selectedCats[it.id]?.createdAt ?: -1,
                 age = it.age,
+                number = selectedCats[it.id]?.number ?: -1,
             )
         }
     }

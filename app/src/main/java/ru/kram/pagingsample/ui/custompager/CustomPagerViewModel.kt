@@ -2,12 +2,12 @@ package ru.kram.pagingsample.ui.custompager
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ru.kram.pagingsample.ui.pager.DataSource
-import ru.kram.pagingsample.ui.pager.Page
-import ru.kram.pagingsample.ui.pager.Pager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.kram.niksi.data.PagedDataSource
+import ru.kram.niksi.model.Page
+import ru.kram.niksi.pagers.SimplePager
 import ru.kram.pagingsample.data.CatsRepository
 import ru.kram.pagingsample.data.db.local.CatLocalDao
 import ru.kram.pagingsample.data.db.local.CatLocalEntity
@@ -24,67 +24,36 @@ class CustomPagerViewModel(
 
     val screenState = MutableStateFlow(CatsScreenState.EMPTY)
 
-    private val pager = Pager(
+    private val pager = SimplePager<CatItemData>(
         pageSize = PAGE_SIZE,
         maxPagesToKeep = 3,
         threshold = PAGE_SIZE / 2,
-        primaryDataSource = object: DataSource<CatItemData> {
-            override suspend fun loadData(page: Int?, loadSize: Int): Page<CatItemData> {
-                val key = page ?: 0
-                val items = catLocalDao.getCats(limit = loadSize, offset = loadSize * key).map {
+        initialPage = 0,
+        dataSource = object: PagedDataSource<CatItemData, Int> {
+            override suspend fun loadData(key: Int, pageSize: Int): Page<CatItemData, Int> {
+                val items = catsRemoteDataSource.getCats(limit = pageSize, offset = pageSize * key).mapIndexed { index, it ->
                     CatItemData(
                         id = it.id,
                         imageUrl = it.imageUrl,
                         name = it.name,
                         breed = it.breed,
                         age = it.age,
-                        createdAt = it.createdAt
+                        createdAt = it.createdAt,
+                        number = it.number,
                     )
                 }
-                Timber.d("primary: key=$key, loadSize=$loadSize, items=${items.joinToString(",") { it.name }}")
+                Timber.d("primary: key=$key, loadSize=$pageSize, items=${items.joinToString(",") { it.name }}")
                 return Page(
                     data = items,
-                    prevPage = if (key == 0) null else key - 1,
-                    nextPage = if (items.size < loadSize) null else key + 1,
+                    prevKey = if (key == 0) null else key - 1,
+                    nextKey = if (items.size < pageSize) null else key + 1,
+                    key = key,
                 )
             }
         },
-        secondaryDataSource = object: DataSource<CatItemData> {
-            override suspend fun loadData(page: Int?, loadSize: Int): Page<CatItemData> {
-                val key = page ?: 0
-                val items = catsRemoteDataSource.getCats(limit = loadSize, offset = loadSize * key).map {
-                    CatItemData(
-                        id = it.id,
-                        imageUrl = it.imageUrl,
-                        name = it.name,
-                        breed = it.breed,
-                        age = it.age,
-                        createdAt = it.createdAt
-                    )
-                }
-                catLocalDao.insertAll(
-                    items.map {
-                        CatLocalEntity(
-                            id = it.id,
-                            imageUrl = it.imageUrl,
-                            name = it.name,
-                            breed = it.breed,
-                            age = it.age,
-                            createdAt = it.createdAt
-                        )
-                    }
-                )
-                Timber.d("secondary: key=$key, loadSize=$loadSize, items=${items.joinToString(",") { it.name }}")
-                return Page(
-                    data = items,
-                    prevPage = if (key == 0) null else key - 1,
-                    nextPage = if (items.size < loadSize) null else key + 1,
-                )
-            }
-        }
     )
 
-    val cats = pager.pagingFlow
+    val cats = pager.data
 
     override fun onCleared() {
         Timber.d("onCleared")
@@ -103,7 +72,7 @@ class CustomPagerViewModel(
 
     fun onAddOneCats() {
         viewModelScope.launch {
-            catsRepository.addCat(System.currentTimeMillis())
+            catsRepository.addCat()
             pager.invalidate()
         }
     }
@@ -125,12 +94,19 @@ class CustomPagerViewModel(
     fun clearUserCats() {
         viewModelScope.launch {
             catsRepository.clearUserCats()
+            pager.invalidate()
         }
     }
 
-    fun onIndexChanged(index: Int) {
+    fun onItemVisible(index: Int) {
         viewModelScope.launch {
-            pager.updateVisibleIndex(index)
+            pager.onItemVisible(index)
+        }
+    }
+
+    fun onCatVisible(catItemData: CatItemData?) {
+        viewModelScope.launch {
+          //  pager.updateVisibleItem(catItemData)
         }
     }
 
