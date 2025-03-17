@@ -15,4 +15,7 @@
     <string name="add_100_cats">Добавить 100 котов</string>
     <string name="clear_local_db">Очистить локальную БД</string>
     <string name="clear_all_user_cats">Очистить всех котов</string>
+
+    <string name="simple_pager_title">Simple pager</string>
+    <string name="simple_pager_with_loading_state_title">Simple pager with loading state</string>
 </resources>

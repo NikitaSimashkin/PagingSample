@@ -10,11 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,7 +24,7 @@ import ru.kram.pagingsample.R
 import ru.kram.pagingsample.designsystem.bottomsheet.BaseBottomSheet
 import ru.kram.pagingsample.designsystem.theme.Colors
 import ru.kram.pagingsample.designsystem.theme.PagingSampleTheme
-import ru.kram.pagingsample.ui.navigation.MenuComponent
+import ru.kram.pagingsample.ui.navigation.menu.MenuComponent
 
 @Composable
 fun MenuScreen(

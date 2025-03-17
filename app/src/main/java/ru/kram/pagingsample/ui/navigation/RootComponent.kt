@@ -8,6 +8,12 @@ import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.decompose.value.Value
 import ru.kram.pagingsample.core.viewModelStoreOwner
+import ru.kram.pagingsample.ui.navigation.menu.CustomPagerScreenType
+import ru.kram.pagingsample.ui.navigation.menu.CustomPagersMenuComponent
+import ru.kram.pagingsample.ui.navigation.menu.CustomPagersMenuComponentImpl
+import ru.kram.pagingsample.ui.navigation.menu.MenuComponent
+import ru.kram.pagingsample.ui.navigation.menu.MenuComponentImpl
+import ru.kram.pagingsample.ui.navigation.menu.screenObject
 
 interface RootComponent {
     val childStack: Value<ChildStack<Screen, Child>>
@@ -20,12 +26,15 @@ interface RootComponent {
             val component: Paging3Component,
             val viewModelStoreOwner: ViewModelStoreOwner
         ) : Child()
-        data class CustomPager(
-            val component: CustomPagerComponent,
-            val viewModelStoreOwner: ViewModelStoreOwner
+        data class CustomPagerMenu(
+            val component: CustomPagersMenuComponent,
         ) : Child()
         data class Both(
             val component: BothComponentImpl,
+            val viewModelStoreOwner: ViewModelStoreOwner,
+        ) : Child()
+        data class CustomPager(
+            val screen: CustomPagerScreenType,
             val viewModelStoreOwner: ViewModelStoreOwner,
         ) : Child()
     }
@@ -54,7 +63,7 @@ class RootComponentImpl(
                 MenuComponentImpl(
                     componentContext = componentContext,
                     onPagingClick = { navigation.push(Screen.Paging3) },
-                    onCustomPagerClick = { navigation.push(Screen.CustomPager) },
+                    onCustomPagerClick = { navigation.push(Screen.CustomPagerMenu) },
                     onBothClick = { navigation.push(Screen.Both) },
                 )
             )
@@ -65,13 +74,18 @@ class RootComponentImpl(
                     viewModelStoreOwner = component.viewModelStoreOwner()
                 )
             }
-            Screen.CustomPager -> RootComponent.Child.CustomPager(
-                CustomPagerComponentImpl(componentContext),
-                componentContext.viewModelStoreOwner()
+            Screen.CustomPagerMenu -> RootComponent.Child.CustomPagerMenu(
+                CustomPagersMenuComponentImpl(componentContext) {
+                    navigation.push(it.screenObject)
+                }
             )
             Screen.Both -> RootComponent.Child.Both(
                 BothComponentImpl(componentContext),
                 componentContext.viewModelStoreOwner(),
+            )
+            is Screen.CustomPager -> RootComponent.Child.CustomPager(
+                screen = screen.screen,
+                viewModelStoreOwner = componentContext.viewModelStoreOwner(),
             )
         }
 

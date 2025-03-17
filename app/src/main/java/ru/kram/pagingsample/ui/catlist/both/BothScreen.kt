@@ -3,7 +3,7 @@ package ru.kram.pagingsample.ui.catlist.both
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import ru.kram.pagingsample.ui.custompager.CustomPagerScreen
+import ru.kram.pagingsample.ui.custompager.simplepager.SimplePagerScreen
 import ru.kram.pagingsample.ui.paging3.Paging3Screen
 
 @Composable
@@ -12,7 +12,7 @@ fun BothScreen(
 ) {
 
     Row {
-        CustomPagerScreen(
+        SimplePagerScreen(
             modifier = modifier.weight(1f),
             smallCats = true,
         )

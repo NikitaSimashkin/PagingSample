@@ -1,4 +1,4 @@
-package ru.kram.pagingsample.ui.custompager
+package ru.kram.pagingsample.ui.custompager.simplepager
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,11 +20,11 @@ import ru.kram.pagingsample.ui.catlist.CatItem
 import ru.kram.pagingsample.ui.catlist.CatListBaseScreen
 
 @Composable
-fun CustomPagerScreen(
+fun SimplePagerScreen(
     modifier: Modifier = Modifier,
     smallCats: Boolean = false,
 ) {
-    val viewModel = koinViewModel<CustomPagerViewModel>()
+    val viewModel = koinViewModel<SimplePagerViewModel>()
     val state by viewModel.screenState.collectAsStateWithLifecycle()
 
     val scrollState = rememberLazyListState()

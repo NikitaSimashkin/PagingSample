@@ -22,7 +22,7 @@ class SimplePager<T>(
 ) : Pager<T, Int> {
 
     private val loadedPages = sortedMapOf<Int, Page<T, Int>>()
-    private val emptyPages = mutableListOf<Int>()
+    private val emptyPages = sortedMapOf<Int, Page<T, Int>>()
 
     private val _data = MutableStateFlow<List<T>>(emptyList())
     override val data: StateFlow<List<T>> = _data
@@ -32,11 +32,9 @@ class SimplePager<T>(
 
     private suspend fun loadPage(page: Int) {
         Timber.d("loadPage: page=$page")
-        if (mutex.withLock { loadedPages.containsKey(page) || emptyPages.contains(page) }) return
-
         val pageResult = dataSource.loadData(page, pageSize)
         if (pageResult.data.isEmpty()) {
-            mutex.withLock { emptyPages.add(page) }
+            mutex.withLock { emptyPages[page] = pageResult }
         }
         mutex.withLock { loadedPages[page] = pageResult }
         updateDataFlow()
@@ -86,9 +84,10 @@ class SimplePager<T>(
         }
     }
 
-    override fun onItemVisible(item: Int) {
+    override fun onItemVisible(item: Int?) {
+        val item = item ?: 0
         scope.launch {
-            if (mutex.withLock { loadedPages.isEmpty() }) {
+            if (mutex.withLock { loadedPages.isEmpty() && !emptyPages.containsKey(item) }) {
                 launch { loadPage(initialPage) }
             }
             if (_data.value.isEmpty()) return@launch
@@ -110,14 +109,14 @@ class SimplePager<T>(
 
                 if (item - pageStartIndex < threshold) {
                     targetPage.prevKey?.let { prevKey ->
-                        if (!mutex.withLock { loadedPages.containsKey(prevKey) }) {
+                        if (!isLoadedOrEmpty(prevKey)) {
                             launch { loadPage(prevKey) }
                         }
                     }
                 }
                 if (pageEndIndex - item <= threshold) {
                     targetPage.nextKey?.let { nextKey ->
-                        if (!mutex.withLock { loadedPages.containsKey(nextKey) }) {
+                        if (!isLoadedOrEmpty(nextKey)) {
                             launch { loadPage(nextKey) }
                         }
                     }
@@ -125,5 +124,9 @@ class SimplePager<T>(
                 unloadPages(pageKey)
             }
         }
+    }
+
+    private suspend fun isLoadedOrEmpty(page: Int): Boolean {
+        return mutex.withLock { loadedPages.containsKey(page) || emptyPages.containsKey(page) }
     }
 }

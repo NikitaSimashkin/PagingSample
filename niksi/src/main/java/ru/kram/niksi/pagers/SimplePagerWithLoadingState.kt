@@ -1,5 +1,6 @@
 package ru.kram.niksi.pagers
 
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -12,11 +13,13 @@ import kotlinx.coroutines.sync.withLock
 import ru.kram.niksi.HasLoadingState
 import ru.kram.niksi.Pager
 import ru.kram.niksi.data.PagedDataSource
-import ru.kram.niksi.model.Page
 import ru.kram.niksi.model.LoadingState
+import ru.kram.niksi.model.Page
+import timber.log.Timber
 
 class SimplePagerWithLoadingState<T, K>(
     private val dataSource: PagedDataSource<T, Int>,
+    private val initialPage: Int,
     private val pageSize: Int,
     private val threshold: Int,
     private val maxPagesToKeep: Int,
@@ -24,6 +27,9 @@ class SimplePagerWithLoadingState<T, K>(
 ) : Pager<T, K>, HasLoadingState {
 
     private val loadedPages = sortedMapOf<Int, Page<T, Int>>()
+    private val emptyPages = sortedMapOf<Int, Page<T, Int>>()
+
+    private val loadingPages = mutableSetOf<Int>()
 
     private val _data = MutableStateFlow<List<T>>(emptyList())
     override val data: StateFlow<List<T>> = _data
@@ -32,10 +38,15 @@ class SimplePagerWithLoadingState<T, K>(
     override val loadingState: StateFlow<LoadingState> = _loadingState
 
     private val scope = MainScope()
-    private val mutex = Mutex()
+    private val dataMutex = Mutex()
 
-    private suspend fun loadPage(page: Int, direction: Direction) {
-        if (mutex.withLock { loadedPages.containsKey(page) }) return
+    private var currentProcessingPage: Int? = null
+    private var currentProcessingJob: Job? = null
+
+    private suspend fun loadPage(page: Int, direction: Direction?) {
+        if (dataMutex.withLock { loadingPages.contains(page) }) return
+
+        dataMutex.withLock { loadingPages.add(page) }
 
         _loadingState.update { current ->
             when (direction) {
@@ -50,23 +61,32 @@ class SimplePagerWithLoadingState<T, K>(
                     LoadingState.Start -> LoadingState.Both
                     LoadingState.End, LoadingState.Both -> current
                 }
+
+                null -> LoadingState.Start
             }
         }
 
+        Timber.d("loadPage: page=$page, direction=$direction")
         val pageResult = dataSource.loadData(page, pageSize)
-        mutex.withLock { loadedPages[page] = pageResult }
+        if (pageResult.data.isEmpty()) {
+            dataMutex.withLock { emptyPages[page] = pageResult }
+        }
+        dataMutex.withLock { loadedPages[page] = pageResult }
         updateDataFlow()
-        mutex.withLock { _loadingState.value = LoadingState.None }
+        dataMutex.withLock {
+            _loadingState.value = LoadingState.None
+            loadingPages.remove(page)
+        }
     }
 
     private suspend fun updateDataFlow() {
-        val combined = mutex.withLock { loadedPages.values.flatMap { it.data } }
+        val combined = dataMutex.withLock { loadedPages.values.flatMap { it.data } }
         _data.value = combined
     }
 
     private suspend fun findPageForVisibleIndex(visibleIndex: Int): Int? {
         var cumulativeCount = 0
-        return mutex.withLock {
+        return dataMutex.withLock {
             for ((page, pageObj) in loadedPages) {
                 val nextCount = cumulativeCount + pageObj.data.size
                 if (visibleIndex in cumulativeCount until nextCount) return@withLock page
@@ -77,42 +97,52 @@ class SimplePagerWithLoadingState<T, K>(
     }
 
     private suspend fun unloadPages(visiblePage: Int) {
-        mutex.withLock {
+        dataMutex.withLock {
             val halfWindow = maxPagesToKeep / 2
             val minPage = visiblePage - halfWindow
             val maxPage = visiblePage + halfWindow
             loadedPages.keys.filter { it < minPage || it > maxPage }
                 .forEach { loadedPages.remove(it) }
+            Timber.d("unloadPages: min=$minPage, max=$maxPage")
         }
         updateDataFlow()
     }
 
     override fun invalidate(resetTerminalPages: Boolean) {
         scope.launch {
-            val pagesToReload = mutex.withLock { loadedPages.keys.toList() }
+            if (resetTerminalPages) {
+                dataMutex.withLock { emptyPages.clear() }
+            }
+            val pagesToReload = dataMutex.withLock { loadedPages.keys.toList() }
             val jobs = pagesToReload.map { page ->
                 async {
-                    val pageResult = dataSource.loadData(page, pageSize)
-                    mutex.withLock { loadedPages[page] = pageResult }
+                    loadPage(page, null)
                 }
             }
             jobs.awaitAll()
             updateDataFlow()
-            _loadingState.value = LoadingState.None
         }
     }
 
-    override fun onItemVisible(item: K) {
+    override fun onItemVisible(item: K?) {
         scope.launch {
-            if (mutex.withLock { loadedPages.isEmpty() }) {
-                launch { loadPage(0, Direction.End) }
+            if (dataMutex.withLock { loadedPages.isEmpty() && !emptyPages.containsKey(initialPage) } || item == null) {
+                launch { loadPage(initialPage, null) }
+                return@launch
             }
             if (_data.value.isEmpty()) return@launch
             val visibleIndex = _data.value.indexOfFirst { isSame(it, item) }
             if (visibleIndex < 0) return@launch
             val visiblePage = findPageForVisibleIndex(visibleIndex)
-            visiblePage?.let { pageKey ->
-                val pagesSnapshot = mutex.withLock { loadedPages.toMap() }
+            if (visiblePage == null || visiblePage == currentProcessingPage) return@launch
+
+            currentProcessingJob?.cancel()
+            currentProcessingPage = visiblePage
+
+            Timber.d("onItemVisible: visibleIndex=$visibleIndex, visiblePage=$visiblePage")
+
+            currentProcessingJob = scope.launch {
+                val pagesSnapshot = dataMutex.withLock { loadedPages.toMap() }
                 var cumulative = 0
                 var targetPage: Page<T, Int>? = null
                 for ((_, pageObj) in pagesSnapshot) {
@@ -122,26 +152,34 @@ class SimplePagerWithLoadingState<T, K>(
                     }
                     cumulative += pageObj.data.size
                 }
-                if (targetPage == null) return@let
+                if (targetPage == null) return@launch
                 val pageStartIndex = cumulative
                 val pageEndIndex = pageStartIndex + targetPage.data.size
+
                 if (visibleIndex - pageStartIndex < threshold) {
                     targetPage.prevKey?.let { prevKey ->
-                        if (!mutex.withLock { loadedPages.containsKey(prevKey) }) {
+                        if (!needSkipLoading(prevKey)) {
                             launch { loadPage(prevKey, Direction.Start) }
                         }
                     }
                 }
                 if (pageEndIndex - visibleIndex <= threshold) {
                     targetPage.nextKey?.let { nextKey ->
-                        if (!mutex.withLock { loadedPages.containsKey(nextKey) }) {
+                        if (!needSkipLoading(nextKey)) {
                             launch { loadPage(nextKey, Direction.End) }
                         }
                     }
                 }
-                unloadPages(pageKey)
+                unloadPages(visiblePage)
+
+                currentProcessingPage = null
+                currentProcessingJob = null
             }
         }
+    }
+
+    private suspend fun needSkipLoading(page: Int): Boolean {
+        return dataMutex.withLock { loadedPages.containsKey(page) || emptyPages.containsKey(page) || loadingPages.contains(page) }
     }
 
     private enum class Direction {

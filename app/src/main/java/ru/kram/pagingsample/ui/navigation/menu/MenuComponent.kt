@@ -1,4 +1,4 @@
-package ru.kram.pagingsample.ui.navigation
+package ru.kram.pagingsample.ui.navigation.menu
 
 import com.arkivanov.decompose.ComponentContext
 

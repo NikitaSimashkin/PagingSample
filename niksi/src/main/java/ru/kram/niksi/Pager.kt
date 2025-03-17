@@ -7,7 +7,7 @@ interface Pager<T, K> {
     val data: StateFlow<List<T>>
 
     fun invalidate(resetTerminalPages: Boolean = false)
-    fun onItemVisible(item: K)
+    fun onItemVisible(item: K?)
 }
 
 interface HasLoadingState {

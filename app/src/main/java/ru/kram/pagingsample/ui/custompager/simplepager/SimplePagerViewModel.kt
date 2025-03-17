@@ -1,4 +1,4 @@
-package ru.kram.pagingsample.ui.custompager
+package ru.kram.pagingsample.ui.custompager.simplepager
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,22 +9,19 @@ import ru.kram.niksi.data.PagedDataSource
 import ru.kram.niksi.model.Page
 import ru.kram.niksi.pagers.SimplePager
 import ru.kram.pagingsample.data.CatsRepository
-import ru.kram.pagingsample.data.db.local.CatLocalDao
-import ru.kram.pagingsample.data.db.local.CatLocalEntity
 import ru.kram.pagingsample.data.remote.CatsRemoteDataSource
 import ru.kram.pagingsample.ui.catlist.model.CatItemData
 import ru.kram.pagingsample.ui.catlist.model.CatsScreenState
 import timber.log.Timber
 
-class CustomPagerViewModel(
+class SimplePagerViewModel(
     private val catsRepository: CatsRepository,
-    private val catLocalDao: CatLocalDao,
     private val catsRemoteDataSource: CatsRemoteDataSource,
 ): ViewModel() {
 
     val screenState = MutableStateFlow(CatsScreenState.EMPTY)
 
-    private val pager = SimplePager<CatItemData>(
+    private val pager = SimplePager(
         pageSize = PAGE_SIZE,
         maxPagesToKeep = 3,
         threshold = PAGE_SIZE / 2,
@@ -101,12 +98,6 @@ class CustomPagerViewModel(
     fun onItemVisible(index: Int) {
         viewModelScope.launch {
             pager.onItemVisible(index)
-        }
-    }
-
-    fun onCatVisible(catItemData: CatItemData?) {
-        viewModelScope.launch {
-          //  pager.updateVisibleItem(catItemData)
         }
     }
 

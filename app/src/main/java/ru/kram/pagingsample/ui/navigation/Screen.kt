@@ -1,6 +1,7 @@
 package ru.kram.pagingsample.ui.navigation
 
 import kotlinx.serialization.Serializable
+import ru.kram.pagingsample.ui.navigation.menu.CustomPagerScreenType
 
 @Serializable
 sealed class Screen {
@@ -12,8 +13,11 @@ sealed class Screen {
     data object Paging3 : Screen()
 
     @Serializable
-    data object CustomPager : Screen()
+    data object CustomPagerMenu : Screen()
 
     @Serializable
     data object Both : Screen()
+
+    @Serializable
+    data class CustomPager(val screen: CustomPagerScreenType) : Screen()
 }
