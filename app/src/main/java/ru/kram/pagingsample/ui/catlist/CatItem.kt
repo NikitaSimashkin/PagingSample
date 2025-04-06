@@ -84,11 +84,6 @@ fun CatItem(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Colors.textPrimary,
                 )
-//            Text(
-//                text = "Age: ${catItemData.age}",
-//                style = MaterialTheme.typography.bodyMedium,
-//                color = Colors.textPrimary,
-//            )
                 Text(
                     text = "Number: ${catItemData.number}",
                     style = MaterialTheme.typography.bodyMedium,
@@ -167,6 +162,12 @@ fun ActionsPopup(
             }
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CatItemPlaceholderPreview() {
+    CatItemPlaceholder(5)
 }
 
 @Preview

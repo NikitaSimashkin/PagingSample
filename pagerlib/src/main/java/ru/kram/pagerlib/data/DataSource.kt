@@ -1,6 +1,6 @@
-package ru.kram.niksi.data
+package ru.kram.pagerlib.data
 
-import ru.kram.niksi.model.Page
+import ru.kram.pagerlib.model.Page
 
 interface DataSource<T, K> {
     suspend fun loadData(key: K, pageSize: Int): T

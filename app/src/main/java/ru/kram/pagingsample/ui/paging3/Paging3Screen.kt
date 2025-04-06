@@ -6,17 +6,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.github.javafaker.Cat
+import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
 import ru.kram.pagingsample.ui.catlist.CatItem
 import ru.kram.pagingsample.ui.catlist.CatListBaseScreen
+import ru.kram.pagingsample.ui.catlist.model.CatItemData
 
 @Composable
 fun Paging3Screen(
@@ -36,7 +43,21 @@ fun Paging3Screen(
         onClearAllUserCats = viewModel::clearUserCats,
         modifier = modifier,
     ) {
-        val cats = viewModel.catList.collectAsLazyPagingItems()
+        val catsPagingData: Flow<PagingData<CatItemData>> =
+            viewModel.catList
+
+        val cats: LazyPagingItems<CatItemData> =
+            catsPagingData.collectAsLazyPagingItems()
+
+        if (cats.loadState.append is LoadState.Loading) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(100.dp),
+            )
+        }
+
+
         LaunchedEffect(cats.itemSnapshotList) {
             viewModel.updateListInfo(cats.itemCount, cats.itemSnapshotList)
         }

@@ -1,4 +1,4 @@
-package ru.kram.niksi.model
+package ru.kram.pagerlib.model
 
 sealed interface LoadingState {
 

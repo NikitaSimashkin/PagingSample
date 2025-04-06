@@ -37,6 +37,7 @@ fun CatListBaseScreen(
     onAdd100Cats: () -> Unit = {},
     onClearLocalDb: () -> Unit = {},
     onClearAllUserCats: () -> Unit = {},
+    onPageClick: (Int) -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     val isAddCatsExpanded = remember { mutableStateOf(false) }
@@ -60,15 +61,14 @@ fun CatListBaseScreen(
         )
 
         Box(
-            modifier = Modifier
-                .weight(1f)
+            modifier = Modifier.weight(1f)
         ) {
             content()
         }
 
         PagesBottomBlock(
             pagesBlockData = pagesBlockData,
-            onPageClick = {},
+            onPageClick = onPageClick,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 8.dp)

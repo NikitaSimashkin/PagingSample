@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 import ru.kram.pagingsample.data.db.local.CatLocalEntity
 
 @Dao
@@ -45,4 +46,14 @@ interface UserCatDao {
 
     @Query("SELECT * FROM UserCatEntity ORDER BY createdAt LIMIT :limit OFFSET :offset")
     suspend fun getUserCats(limit: Int, offset: Int): List<UserCatEntity>
+
+    @Query("SELECT COUNT(*) FROM UserCatEntity WHERE createdAt < :createdAt")
+    suspend fun getUserCatsCountBefore(createdAt: Long): Int
+
+    @Query("SELECT COUNT(*) FROM UserCatEntity WHERE createdAt > :createdAt")
+    suspend fun getUserCatsCountAfter(createdAt: Long): Int
+
+    @Query("SELECT COUNT(*) FROM UserCatEntity")
+
+    fun getUserCatsCount(): Flow<Int>
 }

@@ -6,10 +6,11 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.ItemSnapshotList
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.filter
 import androidx.paging.map
 import androidx.room.InvalidationTracker
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
@@ -39,7 +40,7 @@ class Paging3ViewModel(
         }
     }
 
-    val catList = Pager(
+    val catList: Flow<PagingData<CatItemData>> = Pager(
         config = PagingConfig(
             pageSize = PAGE_SIZE,
             enablePlaceholders = false,
@@ -118,6 +119,7 @@ class Paging3ViewModel(
     fun deleteCat(id: String) {
         viewModelScope.launch {
             catsRepository.deleteCat(id)
+            pagingSource?.invalidate()
         }
     }
 
@@ -128,6 +130,6 @@ class Paging3ViewModel(
     }
 
     companion object {
-        private const val PAGE_SIZE = 30
+        const val PAGE_SIZE = 30
     }
 }

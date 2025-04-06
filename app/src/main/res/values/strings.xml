@@ -18,4 +18,5 @@
 
     <string name="simple_pager_title">Simple pager</string>
     <string name="simple_pager_with_loading_state_title">Simple pager with loading state</string>
+    <string name="jumpable_pager_title">Jumpable pager</string>
 </resources>

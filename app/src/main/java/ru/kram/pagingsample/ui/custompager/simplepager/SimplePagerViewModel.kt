@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.kram.niksi.data.PagedDataSource
-import ru.kram.niksi.model.Page
-import ru.kram.niksi.pagers.SimplePager
+import ru.kram.pagerlib.data.PagedDataSource
+import ru.kram.pagerlib.model.Page
+import ru.kram.pagerlib.pagers.SimplePager
 import ru.kram.pagingsample.data.CatsRepository
 import ru.kram.pagingsample.data.remote.CatsRemoteDataSource
 import ru.kram.pagingsample.ui.catlist.model.CatItemData
@@ -28,7 +28,7 @@ class SimplePagerViewModel(
         initialPage = 0,
         dataSource = object: PagedDataSource<CatItemData, Int> {
             override suspend fun loadData(key: Int, pageSize: Int): Page<CatItemData, Int> {
-                val items = catsRemoteDataSource.getCats(limit = pageSize, offset = pageSize * key).mapIndexed { index, it ->
+                val items = catsRemoteDataSource.getCats(limit = pageSize, offset = pageSize * key).cats.mapIndexed { index, it ->
                     CatItemData(
                         id = it.id,
                         imageUrl = it.imageUrl,

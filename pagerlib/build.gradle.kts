@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "ru.kram.niksi"
+    namespace = "ru.kram.pagerlib"
     compileSdk = 34
 
     defaultConfig {

@@ -1,4 +1,4 @@
-package ru.kram.niksi.model
+package ru.kram.pagerlib.model
 
 data class Page<T, K>(
     val data: List<T>,

@@ -1,5 +1,6 @@
 package ru.kram.pagingsample.ui.custompager.simplepagerloading
 
+import PrimaryActionButton
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +19,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.onStart
 import org.koin.androidx.compose.koinViewModel
-import ru.kram.niksi.model.LoadingState
+import ru.kram.pagerlib.model.LoadingState
 import ru.kram.pagingsample.ui.catlist.CatItem
 import ru.kram.pagingsample.ui.catlist.CatListBaseScreen
 import ru.kram.pagingsample.ui.catlist.model.CatItemData
@@ -55,36 +55,31 @@ fun SimplePagerWithLoadingStateScreen(
         Column(
             Modifier.fillMaxSize()
         ) {
-            val cats = viewModel.cats.collectAsStateWithLifecycle()
-            val loading = viewModel.loadingState.collectAsStateWithLifecycle()
+            val catState = viewModel.catPagingState.collectAsStateWithLifecycle()
             val offset = remember { mutableIntStateOf(0) }
 
             LaunchedEffect(Unit) {
                 snapshotFlow {
-                    viewModel.updateListInfo(cats.value.size, cats.value)
+                    Timber.d("loadingState=${catState.value.loadingState}")
+                    viewModel.updateListInfo(catState.value.cats.size, catState.value.cats)
                 }.collect {}
             }
 
+            if (catState.value.loadingState is LoadingState.Start) {
+                LoadingIndicator()
+            }
+
             LazyColumn(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.weight(1f),
                 contentPadding = PaddingValues(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 state = scrollState,
             ) {
-                if (loading.value is LoadingState.Start || loading.value is LoadingState.Both) {
-                    item(
-                        key = "loading start"
-                    ) {
-                        offset.intValue = 1
-                        LoadingIndicator()
-                    }
-                }
-
                 items(
-                    count = cats.value.size,
-                    key = { index -> cats.value[index].id },
+                    count = catState.value.cats.size,
+                    key = { index -> catState.value.cats[index].id },
                 ) { index ->
-                    val cat = cats.value[index]
+                    val cat = catState.value.cats[index]
                     CatItem(
                         catItemData = cat,
                         onDeleteClick = { viewModel.deleteCat(cat) },
@@ -94,7 +89,7 @@ fun SimplePagerWithLoadingStateScreen(
                     )
                 }
 
-                if (loading.value is LoadingState.End || loading.value is LoadingState.Both) {
+                if (catState.value.loadingState is LoadingState.End || catState.value.loadingState is LoadingState.Both) {
                     item(
                         key = "loading end"
                     ) {
@@ -106,7 +101,7 @@ fun SimplePagerWithLoadingStateScreen(
             PagerObserver(
                 lazyListState = scrollState,
                 onCatVisible = viewModel::onCatVisible,
-                catsState = cats,
+                catsState = catState,
                 offset = offset,
             )
         }
@@ -116,7 +111,7 @@ fun SimplePagerWithLoadingStateScreen(
 @Composable
 private fun PagerObserver(
     lazyListState: LazyListState,
-    catsState: State<List<CatItemData>>,
+    catsState: State<CatsWithLoadingState>,
     onCatVisible: (CatItemData?) -> Unit,
     offset: State<Int>,
 ) {
@@ -133,9 +128,9 @@ private fun PagerObserver(
         }.onStart {
             emit(0)
         }.collect { index ->
-            val cats = catsState.value
-            Timber.d("onCatVisible: index=$index, cat=${cats.getOrNull(index)?.name}")
-            onCatVisible(cats.getOrNull(index))
+            val state = catsState.value
+            Timber.d("onCatVisible: index=$index, cat=${state.cats.getOrNull(index)?.name}")
+            onCatVisible(state.cats.getOrNull(index))
         }
     }
 }

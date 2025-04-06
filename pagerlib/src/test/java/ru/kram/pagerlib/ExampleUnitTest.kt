@@ -1,4 +1,4 @@
-package ru.kram.niksi
+package ru.kram.pagerlib
 
 import org.junit.Test
 

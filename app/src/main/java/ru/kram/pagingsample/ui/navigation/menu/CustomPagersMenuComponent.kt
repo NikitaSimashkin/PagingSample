@@ -6,6 +6,7 @@ import ru.kram.pagingsample.ui.navigation.Screen
 enum class CustomPagerScreenType {
     SIMPLE_PAGER,
     SIMPLE_PAGER_WITH_LOADING_STATE,
+    JUMPABLE_PAGER,
 }
 
 val CustomPagerScreenType.screenObject: Screen get() = Screen.CustomPager(this)

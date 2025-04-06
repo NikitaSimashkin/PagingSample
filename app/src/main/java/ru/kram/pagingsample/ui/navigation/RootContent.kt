@@ -7,6 +7,7 @@ import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
 import ru.kram.pagingsample.ui.catlist.both.BothScreen
 import ru.kram.pagingsample.ui.catlist.custompagermenu.CustomPagersMenuScreen
 import ru.kram.pagingsample.ui.custompager.simplepager.SimplePagerScreen
+import ru.kram.pagingsample.ui.custompager.jumpablepager.JumpablePagerScreen
 import ru.kram.pagingsample.ui.custompager.simplepagerloading.SimplePagerWithLoadingStateScreen
 import ru.kram.pagingsample.ui.menu.MenuScreen
 import ru.kram.pagingsample.ui.navigation.menu.CustomPagerScreenType
@@ -47,6 +48,10 @@ fun RootContent(component: RootComponent) {
 
                         CustomPagerScreenType.SIMPLE_PAGER_WITH_LOADING_STATE -> {
                             SimplePagerWithLoadingStateScreen()
+                        }
+
+                        CustomPagerScreenType.JUMPABLE_PAGER -> {
+                            JumpablePagerScreen()
                         }
                     }
                 }

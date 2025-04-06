@@ -9,13 +9,17 @@ import ru.kram.pagingsample.ui.paging3.Paging3ViewModel
 val paging3Module = module {
 
     single {
-        CatsPagingSource.Factory(get())
+        CatsPagingSource.Factory(
+            basePageSize = Paging3ViewModel.PAGE_SIZE,
+            catLocalDao = get(),
+        )
     }
 
     single {
         CatsRemoteMediator(
             catLocalDao = get(),
             catsRemoteDataSource = get(),
+            basePageSize = Paging3ViewModel.PAGE_SIZE
         )
     }
 

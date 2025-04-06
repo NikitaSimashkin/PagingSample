@@ -48,6 +48,12 @@ fun CustomPagersMenuScreen(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { component.onPagerScreenSelected(CustomPagerScreenType.SIMPLE_PAGER_WITH_LOADING_STATE) }
             )
+
+            PrimaryActionButton(
+                text = stringResource(R.string.jumpable_pager_title),
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { component.onPagerScreenSelected(CustomPagerScreenType.JUMPABLE_PAGER) }
+            )
         }
     }
 }

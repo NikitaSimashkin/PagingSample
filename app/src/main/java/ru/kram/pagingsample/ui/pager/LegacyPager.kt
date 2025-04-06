@@ -20,7 +20,7 @@ data class Page<T>(
     val itemsAfter: Int? = null
 )
 
-class Pager<T>(
+class LegacyPager<T>(
     private val primaryDataSource: DataSource<T>,
     private val secondaryDataSource: DataSource<T>,
     private val pageSize: Int,

@@ -5,15 +5,15 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.lastOrNull
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.kram.niksi.data.PagedDataSource
-import ru.kram.niksi.model.Page
-import ru.kram.niksi.pagers.SimplePager
-import ru.kram.niksi.pagers.SimplePagerWithLoadingState
+import ru.kram.pagerlib.data.PagedDataSource
+import ru.kram.pagerlib.model.LoadingState
+import ru.kram.pagerlib.model.Page
+import ru.kram.pagerlib.pagers.SimplePagerWithLoadingState
 import ru.kram.pagingsample.data.CatsRepository
 import ru.kram.pagingsample.data.remote.CatsRemoteDataSource
 import ru.kram.pagingsample.data.remote.model.CatDTO
@@ -35,13 +35,13 @@ class SimplePagerWithLoadingStateViewModel(
         initialPage = 0,
         dataSource = object: PagedDataSource<CatDTO, Int> {
             override suspend fun loadData(key: Int, pageSize: Int): Page<CatDTO, Int> {
-                delay(2000)
+                delay(1000)
                 val items = catsRemoteDataSource.getCats(limit = pageSize, offset = pageSize * key)
-                Timber.d("primary: key=$key, loaded=${items.size}")
+                Timber.d("primary: key=$key, loaded=${items.cats.size}")
                 return Page(
-                    data = items,
+                    data = items.cats,
                     prevKey = if (key == 0) null else key - 1,
-                    nextKey = if (items.size < pageSize) null else key + 1,
+                    nextKey = if (items.cats.size < pageSize) null else key + 1,
                     key = key,
                 )
             }
@@ -49,7 +49,7 @@ class SimplePagerWithLoadingStateViewModel(
         isSame = { catDTO, catItemData -> catDTO.id == catItemData.id }
     )
 
-    val cats = pager.data.map { list ->
+    private val cats = pager.data.map { list ->
         list.map {
             CatItemData(
                 id = it.id,
@@ -67,7 +67,21 @@ class SimplePagerWithLoadingStateViewModel(
         started = SharingStarted.Lazily,
     )
 
-    val loadingState = pager.loadingState
+    val catPagingState = combine(
+        cats, pager.loadingState
+    ) { cats, loadingState ->
+        CatsWithLoadingState(
+            cats = cats,
+            loadingState = loadingState,
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        initialValue = CatsWithLoadingState(
+            cats = emptyList(),
+            loadingState = LoadingState.None,
+        ),
+        started = SharingStarted.Lazily,
+    )
 
     override fun onCleared() {
         Timber.d("onCleared")
