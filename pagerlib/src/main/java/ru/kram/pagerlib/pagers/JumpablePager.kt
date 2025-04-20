@@ -3,7 +3,10 @@ package ru.kram.pagerlib.pagers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -26,13 +29,12 @@ import kotlin.coroutines.coroutineContext
 import kotlin.math.abs
 
 class JumpablePager<T, K>(
-    private val dataSource: PagedDataSource<T, Int>,
+    private val primaryDataSource: PagedDataSource<T, Int>,
     private val initialPage: Int,
     private val pageSize: Int,
     private val threshold: Int,
     private val maxPagesToKeep: Int,
     private val pageByItem: (K, Collection<Page<T, Int>>) -> PageWithIndex<Int>,
-    private val filterPredicate: (T) -> Boolean = { true },
 ) : Pager<T, K> {
 
     private val loadedPages = sortedMapOf<Int, Page<T, Int>>()
@@ -79,7 +81,7 @@ class JumpablePager<T, K>(
                     is Action.LoadPage -> processLoadPage(action, currentVisiblePageKey = visiblePageKey, indexInPage = visibleIndex)
                     is Action.RemovePages -> processRemovePages()
                     is Action.UpdateDataFlow -> processUpdateDataFlow()
-                    is Action.Invalidate -> processInvalidate(action)
+                    is Action.Invalidate -> processInvalidate(visiblePageKey = visiblePageKey)
                     is Action.CheckNeedLoad -> processCheckNeedLoad()
                 }
             }
@@ -106,7 +108,7 @@ class JumpablePager<T, K>(
         }
     }
 
-    private suspend fun processInvalidate(action: Action.Invalidate) {
+    private suspend fun processInvalidate(visiblePageKey: Int) {
         dataMutex.withLock {
             loadedPages.clear()
             loadingPages.forEach { (_, job) -> job.cancel() }
@@ -114,12 +116,8 @@ class JumpablePager<T, K>(
             emptyPages.clear()
 
             Timber.d("processInvalidate")
-            actionDeque.addLast(
-                Action.LoadPage(
-                    currentVisiblePageWithIndex.value?.page ?: initialPage
-                )
-            )
         }
+        loadMultiplePages(visiblePageKey)
     }
 
     private suspend fun processLoadPage(
@@ -143,6 +141,15 @@ class JumpablePager<T, K>(
         }
     }
 
+    private suspend fun loadMultiplePages(currentVisiblePageKey: Int) {
+        coroutineScope {
+            val page = loadPage(currentVisiblePageKey)
+            val adjacentKeys = listOfNotNull(page.prevKey, page.nextKey)
+            adjacentKeys.map { key -> async { loadPage(key) } }.awaitAll()
+            onNewPageLoaded(page)
+        }
+    }
+
     private suspend fun processRemovePages() {
         if (loadedPages.size > maxPagesToKeep) {
             dataMutex.withLock {
@@ -162,25 +169,31 @@ class JumpablePager<T, K>(
         }
     }
 
-    private fun loadPageAsync(page: Int): Job {
+    private suspend fun loadPage(page: Int): Page<T, Int> {
         Timber.d("loadPage: page=$page")
 
+        val pageResult = primaryDataSource.loadData(page, pageSize)
+
+        dataMutex.withLock {
+            loadedPages[page] = pageResult
+            if (pageResult.data.isEmpty()) {
+                emptyPages.add(page)
+            }
+        }
+
+        return pageResult
+    }
+
+    private fun loadPageAsync(page: Int): Job {
+        Timber.d("loadPageAsync: page=$page")
         loadingPages[page]?.cancel()
         val loadJob = scope.launch {
-            val pageResult = dataSource.loadData(page, pageSize)
             ensureActive()
-
-            dataMutex.withLock {
-                ensureActive()
-                loadedPages[page] = pageResult
-                loadingPages.remove(page)
-                if (pageResult.data.isEmpty()) {
-                    emptyPages.add(page)
-                }
-            }
+            val pageResult = loadPage(page)
+            loadingPages.remove(page)
             onNewPageLoaded(pageResult)
         }
-        Timber.d("loadPage: $page, finished")
+        Timber.d("loadPageAsync: $page, finished")
         loadingPages[page] = loadJob
         return loadJob
     }
@@ -249,7 +262,7 @@ class JumpablePager<T, K>(
     }
 
     sealed class Action {
-        data class LoadPage(val key: Int, val reload: Boolean = false) : Action()
+        data class LoadPage(val key: Int) : Action()
         data object RemovePages : Action()
         data object UpdateDataFlow : Action()
         class Invalidate : Action()

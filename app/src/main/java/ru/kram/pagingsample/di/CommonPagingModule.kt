@@ -4,39 +4,48 @@ import androidx.room.Room
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import ru.kram.pagingsample.core.ServerDatabaseTransactionHelper
-import ru.kram.pagingsample.data.CatsRepository
-import ru.kram.pagingsample.data.db.local.CatLocalDao
-import ru.kram.pagingsample.data.db.local.CatLocalDatabase
-import ru.kram.pagingsample.data.remote.CatsRemoteDataSource
+import ru.kram.pagingsample.data.FilmsRepository
+import ru.kram.pagingsample.data.db.local.FilmLocalDao
+import ru.kram.pagingsample.data.db.local.FilmLocalDataSource
+import ru.kram.pagingsample.data.db.local.FilmLocalDatabase
+import ru.kram.pagingsample.data.remote.FilmsRemoteDataSource
 
 val commonPagingModule = module {
 
-    single<CatLocalDatabase> {
+    single<FilmLocalDatabase> {
         Room.databaseBuilder(
             androidContext(),
-            CatLocalDatabase::class.java,
-            CatLocalDatabase.DATABASE_NAME
+            FilmLocalDatabase::class.java,
+            FilmLocalDatabase.DATABASE_NAME
         )
             .fallbackToDestructiveMigration()
             .build()
     }
 
     single {
-        CatsRemoteDataSource(
+        FilmsRemoteDataSource(
             roomTransactionHelper = get<ServerDatabaseTransactionHelper>(),
-            catPersistentDao = get(),
-            userCatDao = get(),
+            filmPersistentDao = get(),
+            userFilmDao = get(),
         )
     }
 
-    single<CatLocalDao> {
-        get<CatLocalDatabase>().catLocalDao()
+    single<FilmLocalDao> {
+        get<FilmLocalDatabase>().filmLocalDao()
     }
 
     single {
-        CatsRepository(
-            catsRemoteDataSource = get(),
-            catLocalDao = get(),
+        FilmLocalDataSource(
+            filmLocalDao = get(),
+            dispatchers = get(),
+            context = androidContext(),
+        )
+    }
+
+    single {
+        FilmsRepository(
+            filmsRemoteDataSource = get(),
+            filmLocalDataSource = get(),
             dispatchers = get(),
         )
     }

@@ -19,15 +19,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import ru.kram.pagingsample.ui.catlist.CatItem
-import ru.kram.pagingsample.ui.catlist.CatItemPlaceholder
-import ru.kram.pagingsample.ui.catlist.CatListBaseScreen
+import ru.kram.pagingsample.ui.filmlist.FilmItem
+import ru.kram.pagingsample.ui.filmlist.FilmItemPlaceholder
+import ru.kram.pagingsample.ui.filmlist.FilmListBaseScreen
+import ru.kram.pagingsample.ui.filmlist.FilmItem
+import ru.kram.pagingsample.ui.filmlist.FilmItemPlaceholder
 import timber.log.Timber
 
 @Composable
 fun JumpablePagerScreen(
     modifier: Modifier = Modifier,
-    smallCats: Boolean = false,
+    smallFilms: Boolean = false,
 ) {
     val scope = rememberCoroutineScope()
     val viewModel = koinViewModel<JumpablePagerViewModel>()
@@ -35,12 +37,12 @@ fun JumpablePagerScreen(
 
     val scrollState = rememberLazyListState()
 
-    CatListBaseScreen(
+    FilmListBaseScreen(
         infoBlockData = state.infoBlockData,
         pagesBlockData = state.pagesBlockData,
-        onAddOneCats = viewModel::onAddOneCats,
-        onAdd100Cats = viewModel::onAdd100Cats,
-        onClearAllUserCats = viewModel::clearUserCats,
+        onAddOneFilms = viewModel::onAddOneFilms,
+        onAdd100Films = viewModel::onAdd100Films,
+        onClearAllUserFilms = viewModel::clearUserFilms,
         onClearLocalDb = viewModel::clearLocalDb,
         onPageClick = { page ->
             scope.launch {
@@ -52,7 +54,7 @@ fun JumpablePagerScreen(
         Column(
             Modifier.fillMaxSize()
         ) {
-            val catState = viewModel.cats.collectAsStateWithLifecycle()
+            val filmState = viewModel.films.collectAsStateWithLifecycle()
 
             LazyColumn(
                 modifier = Modifier.weight(1f),
@@ -61,22 +63,23 @@ fun JumpablePagerScreen(
                 state = scrollState,
             ) {
                 items(
-                    count = catState.value.size,
-                    key = { index -> catState.value[index]?.id ?: index },
+                    count = filmState.value.size,
+                    key = { index -> filmState.value[index]?.id ?: index },
                 ) { index ->
-                    val cat = catState.value[index]
-                    if (cat == null) {
-                        CatItemPlaceholder(
-                            number = index,
-                            showOnlyNumber = smallCats,
+                    val film = filmState.value[index]
+                    if (film == null) {
+                        FilmItemPlaceholder(
+                            index = index,
+                            showOnlyNumber = smallFilms,
                         )
                     } else {
-                        CatItem(
-                            catItemData = cat,
-                            onDeleteClick = { viewModel.deleteCat(cat) },
+                        FilmItem(
+                            filmItemData = film,
+                            onDeleteClick = { viewModel.deleteFilm(film) },
                             onRenameClick = {},
-                            showOnlyNumber = smallCats,
-                            modifier = if (smallCats) Modifier.height(75.dp) else Modifier
+                            showOnlyNumber = smallFilms,
+                            modifier = if (smallFilms) Modifier.height(75.dp) else Modifier,
+                            index = index,
                         )
                     }
                 }
@@ -108,7 +111,7 @@ private fun PagerObserver(
         }.onStart {
             emit(0)
         }.collect { index ->
-            Timber.d("onCatVisible: index=$index")
+            Timber.d("onFilmVisible: index=$index")
             onIndexVisible(index)
         }
     }

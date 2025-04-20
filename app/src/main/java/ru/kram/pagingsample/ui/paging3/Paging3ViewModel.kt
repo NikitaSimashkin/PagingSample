@@ -15,59 +15,53 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.kram.pagingsample.data.CatsRepository
-import ru.kram.pagingsample.data.db.local.CatLocalDatabase
-import ru.kram.pagingsample.data.paging.CatsPagingSource
-import ru.kram.pagingsample.data.paging.CatsRemoteMediator
-import ru.kram.pagingsample.ui.catlist.model.CatItemData
-import ru.kram.pagingsample.ui.catlist.model.CatsScreenState
+import ru.kram.pagingsample.data.FilmsRepository
+import ru.kram.pagingsample.data.db.local.FilmLocalDatabase
+import ru.kram.pagingsample.data.paging.FilmsPagingSource
+import ru.kram.pagingsample.data.paging.FilmsRemoteMediator
+import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
+import ru.kram.pagingsample.ui.filmlist.model.FilmsScreenState
 import timber.log.Timber
 
 @OptIn(ExperimentalPagingApi::class)
 class Paging3ViewModel(
-    private val catsPagingSourceFactory: CatsPagingSource.Factory,
-    private val catLocalDatabase: CatLocalDatabase,
-    catsRemoteMediator: CatsRemoteMediator,
-    private val catsRepository: CatsRepository,
-): ViewModel() {
+    private val filmsPagingSourceFactory: FilmsPagingSource.Factory,
+    private val filmLocalDatabase: FilmLocalDatabase,
+    filmsRemoteMediator: FilmsRemoteMediator,
+    private val filmsRepository: FilmsRepository,
+) : ViewModel() {
 
-    val screenState = MutableStateFlow(CatsScreenState.EMPTY)
+    val screenState = MutableStateFlow(FilmsScreenState.EMPTY)
 
-    private var pagingSource: CatsPagingSource? = null
-    private val observer = object : InvalidationTracker.Observer("CatLocalEntity") {
+    private var pagingSource: FilmsPagingSource? = null
+    private val observer = object : InvalidationTracker.Observer("FilmLocalEntity") {
         override fun onInvalidated(tables: Set<String>) {
             pagingSource?.invalidate()
         }
     }
 
-    val catList: Flow<PagingData<CatItemData>> = Pager(
-        config = PagingConfig(
-            pageSize = PAGE_SIZE,
-            enablePlaceholders = false,
-            initialLoadSize = PAGE_SIZE,
-            prefetchDistance = PAGE_SIZE / 2,
-            maxSize = PAGE_SIZE * 3,
-        ),
-        pagingSourceFactory = {
-            catsPagingSourceFactory().also {
-                pagingSource = it
+    val filmsList: Flow<PagingData<FilmItemData>> =
+        Pager(
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                maxSize = PAGE_SIZE * 3,
+            ),
+            pagingSourceFactory = {
+                filmsPagingSourceFactory()
+            },
+            remoteMediator = filmsRemoteMediator,
+        ).flow.map { pagingData ->
+            pagingData.map {
+                FilmItemData(
+                    id = it.id,
+                    imageUrl = it.imageUrl,
+                    name = it.name,
+                    year = it.age,
+                    createdAt = it.createdAt,
+                    number = it.number,
+                )
             }
-        },
-        remoteMediator = catsRemoteMediator,
-    ).flow
-        .map { flow ->
-        flow.map {
-            CatItemData(
-                id = it.id,
-                imageUrl = it.imageUrl,
-                name = it.name,
-                breed = it.breed,
-                age = it.age,
-                createdAt = it.createdAt,
-                number = it.number,
-            )
-        }
-    }.cachedIn(viewModelScope)
+        }.cachedIn(viewModelScope)
 
     init {
         observeDatabaseChanges()
@@ -75,19 +69,19 @@ class Paging3ViewModel(
 
     override fun onCleared() {
         Timber.d("onCleared")
-        catLocalDatabase.invalidationTracker.removeObserver(observer)
+        filmLocalDatabase.invalidationTracker.removeObserver(observer)
     }
 
     private fun observeDatabaseChanges() {
-        val observer = object : InvalidationTracker.Observer("CatLocalEntity") {
+        val observer = object : InvalidationTracker.Observer("FilmLocalEntity") {
             override fun onInvalidated(tables: Set<String>) {
                 pagingSource?.invalidate()
             }
         }
-        catLocalDatabase.invalidationTracker.addObserver(observer)
+        filmLocalDatabase.invalidationTracker.addObserver(observer)
     }
 
-    fun updateListInfo(itemsInMemory: Int, items: ItemSnapshotList<CatItemData>) {
+    fun updateListInfo(itemsInMemory: Int, items: ItemSnapshotList<FilmItemData>) {
         screenState.update {
             it.copy(
                 infoBlockData = it.infoBlockData.copy(
@@ -95,37 +89,37 @@ class Paging3ViewModel(
                 )
             )
         }
-        Timber.d("updateListInfo: cats=${items.joinToString(",") { it?.name ?: "" }}, itemsInMemory=$itemsInMemory")
+        Timber.d("updateListInfo: films=${items.joinToString(",") { it?.name ?: "" }}, itemsInMemory=$itemsInMemory")
     }
 
-    fun onAddOneCats() {
+    fun onAddOneFilms() {
         viewModelScope.launch {
-            catsRepository.addCat()
+            filmsRepository.addFilm()
         }
     }
 
-    fun onAdd100Cats() {
+    fun onAdd100Films() {
         viewModelScope.launch {
-            catsRepository.addCats(100)
+            filmsRepository.addFilms(100)
         }
     }
 
     fun clearLocalDb() {
         viewModelScope.launch {
-            catsRepository.clearLocal()
+            filmsRepository.clearLocal()
         }
     }
 
-    fun deleteCat(id: String) {
+    fun deleteFilm(id: String) {
         viewModelScope.launch {
-            catsRepository.deleteCat(id)
+            filmsRepository.deleteFilm(id)
             pagingSource?.invalidate()
         }
     }
 
-    fun clearUserCats() {
+    fun clearUserFilms() {
         viewModelScope.launch {
-            catsRepository.clearUserCats()
+            filmsRepository.clearUserFilms()
         }
     }
 

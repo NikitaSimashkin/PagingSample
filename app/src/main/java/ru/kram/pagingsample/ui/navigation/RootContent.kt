@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
-import ru.kram.pagingsample.ui.catlist.both.BothScreen
-import ru.kram.pagingsample.ui.catlist.custompagermenu.CustomPagersMenuScreen
+import ru.kram.pagingsample.ui.filmlist.both.BothScreen
+import ru.kram.pagingsample.ui.filmlist.custompagermenu.CustomPagersMenuScreen
 import ru.kram.pagingsample.ui.custompager.simplepager.SimplePagerScreen
 import ru.kram.pagingsample.ui.custompager.jumpablepager.JumpablePagerScreen
 import ru.kram.pagingsample.ui.custompager.simplepagerloading.SimplePagerWithLoadingStateScreen

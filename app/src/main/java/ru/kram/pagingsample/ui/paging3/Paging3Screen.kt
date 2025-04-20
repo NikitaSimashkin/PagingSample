@@ -18,48 +18,43 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
-import com.github.javafaker.Cat
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
-import ru.kram.pagingsample.ui.catlist.CatItem
-import ru.kram.pagingsample.ui.catlist.CatListBaseScreen
-import ru.kram.pagingsample.ui.catlist.model.CatItemData
+import ru.kram.pagingsample.ui.filmlist.FilmListBaseScreen
+import ru.kram.pagingsample.ui.filmlist.FilmItem
+import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
 
 @Composable
 fun Paging3Screen(
     modifier: Modifier = Modifier,
-    smallCats: Boolean = false,
+    smallFilms: Boolean = false,
 ) {
     val viewModel = koinViewModel<Paging3ViewModel>()
 
     val state by viewModel.screenState.collectAsStateWithLifecycle()
     val scrollState = rememberLazyListState()
-    CatListBaseScreen(
+    FilmListBaseScreen(
         infoBlockData = state.infoBlockData,
         pagesBlockData = state.pagesBlockData,
-        onAddOneCats = viewModel::onAddOneCats,
-        onAdd100Cats = viewModel::onAdd100Cats,
+        onAddOneFilms = viewModel::onAddOneFilms,
+        onAdd100Films = viewModel::onAdd100Films,
         onClearLocalDb = viewModel::clearLocalDb,
-        onClearAllUserCats = viewModel::clearUserCats,
+        onClearAllUserFilms = viewModel::clearUserFilms,
         modifier = modifier,
     ) {
-        val catsPagingData: Flow<PagingData<CatItemData>> =
-            viewModel.catList
+        val filmsPagingData: Flow<PagingData<FilmItemData>> =
+            viewModel.filmsList
 
-        val cats: LazyPagingItems<CatItemData> =
-            catsPagingData.collectAsLazyPagingItems()
+        val films: LazyPagingItems<FilmItemData> =
+            filmsPagingData.collectAsLazyPagingItems()
 
-        if (cats.loadState.append is LoadState.Loading) {
-            CircularProgressIndicator(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .height(100.dp),
-            )
+        if (films.loadState.append is LoadState.Loading) {
+            CircularProgressIndicator()
         }
 
 
-        LaunchedEffect(cats.itemSnapshotList) {
-            viewModel.updateListInfo(cats.itemCount, cats.itemSnapshotList)
+        LaunchedEffect(films.itemSnapshotList) {
+            viewModel.updateListInfo(films.itemCount, films.itemSnapshotList)
         }
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
@@ -68,17 +63,18 @@ fun Paging3Screen(
             state = scrollState,
         ) {
             items(
-                count = cats.itemCount,
-                key = cats.itemKey { it.id },
+                count = films.itemCount,
+                key = films.itemKey { it.id },
             ) { index ->
-                val cat = cats[index]
-                if (cat != null) {
-                    CatItem(
-                        catItemData = cat,
-                        onDeleteClick = viewModel::deleteCat,
+                val film = films[index]
+                if (film != null) {
+                    FilmItem(
+                        filmItemData = film,
+                        onDeleteClick = viewModel::deleteFilm,
                         onRenameClick = {},
-                        showOnlyNumber = smallCats,
-                        modifier = if (smallCats) Modifier.height(75.dp) else Modifier
+                        showOnlyNumber = smallFilms,
+                        modifier = if (smallFilms) Modifier.height(75.dp) else Modifier,
+                        index = index,
                     )
                 }
             }

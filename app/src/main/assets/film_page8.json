@@ -1,0 +1,1368 @@
+[
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 3,
+        "name": "funny"
+      }
+    ],
+    "id": "88",
+    "url": "https://cdn2.thefilmapi.com/images/88.gif",
+    "width": 300,
+    "height": 156
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 3,
+        "name": "funny"
+      }
+    ],
+    "id": "8f",
+    "url": "https://cdn2.thefilmapi.com/images/8f.gif",
+    "width": 480,
+    "height": 270
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 3,
+        "name": "funny"
+      }
+    ],
+    "id": "9o",
+    "url": "https://cdn2.thefilmapi.com/images/9o.gif",
+    "width": 179,
+    "height": 176
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 6,
+        "name": "filmurday"
+      }
+    ],
+    "id": "p5",
+    "url": "https://cdn2.thefilmapi.com/images/p5.jpg",
+    "width": 640,
+    "height": 429
+  },
+  {
+    "breeds": [],
+    "id": "1av",
+    "url": "https://cdn2.thefilmapi.com/images/1av.gif",
+    "width": 400,
+    "height": 300
+  },
+  {
+    "breeds": [],
+    "id": "25p",
+    "url": "https://cdn2.thefilmapi.com/images/25p.jpg",
+    "width": 4288,
+    "height": 3216
+  },
+  {
+    "breeds": [],
+    "id": "2sk",
+    "url": "https://cdn2.thefilmapi.com/images/2sk.jpg",
+    "width": 960,
+    "height": 720
+  },
+  {
+    "breeds": [],
+    "id": "306",
+    "url": "https://cdn2.thefilmapi.com/images/306.jpg",
+    "width": 2048,
+    "height": 1536
+  },
+  {
+    "breeds": [],
+    "id": "33t",
+    "url": "https://cdn2.thefilmapi.com/images/33t.gif",
+    "width": 500,
+    "height": 264
+  },
+  {
+    "breeds": [],
+    "id": "3c1",
+    "url": "https://cdn2.thefilmapi.com/images/3c1.gif",
+    "width": 400,
+    "height": 225
+  },
+  {
+    "breeds": [],
+    "id": "3g4",
+    "url": "https://cdn2.thefilmapi.com/images/3g4.jpg",
+    "width": 500,
+    "height": 473
+  },
+  {
+    "breeds": [],
+    "id": "3jm",
+    "url": "https://cdn2.thefilmapi.com/images/3jm.jpg",
+    "width": 612,
+    "height": 612
+  },
+  {
+    "breeds": [],
+    "id": "3ll",
+    "url": "https://cdn2.thefilmapi.com/images/3ll.jpg",
+    "width": 640,
+    "height": 428
+  },
+  {
+    "breeds": [],
+    "id": "3oh",
+    "url": "https://cdn2.thefilmapi.com/images/3oh.gif",
+    "width": 320,
+    "height": 200
+  },
+  {
+    "breeds": [],
+    "id": "3ok",
+    "url": "https://cdn2.thefilmapi.com/images/3ok.gif",
+    "width": 500,
+    "height": 281
+  },
+  {
+    "breeds": [],
+    "id": "3sd",
+    "url": "https://cdn2.thefilmapi.com/images/3sd.gif",
+    "width": 500,
+    "height": 193
+  },
+  {
+    "breeds": [],
+    "id": "3v8",
+    "url": "https://cdn2.thefilmapi.com/images/3v8.jpg",
+    "width": 3008,
+    "height": 2000
+  },
+  {
+    "breeds": [],
+    "id": "4ci",
+    "url": "https://cdn2.thefilmapi.com/images/4ci.gif",
+    "width": 479,
+    "height": 251
+  },
+  {
+    "breeds": [],
+    "id": "4dj",
+    "url": "https://cdn2.thefilmapi.com/images/4dj.gif",
+    "width": 250,
+    "height": 174
+  },
+  {
+    "breeds": [],
+    "id": "4lp",
+    "url": "https://cdn2.thefilmapi.com/images/4lp.gif",
+    "width": 300,
+    "height": 225
+  },
+  {
+    "breeds": [],
+    "id": "588",
+    "url": "https://cdn2.thefilmapi.com/images/588.jpg",
+    "width": 500,
+    "height": 375
+  },
+  {
+    "breeds": [],
+    "id": "6e6",
+    "url": "https://cdn2.thefilmapi.com/images/6e6.jpg",
+    "width": 321,
+    "height": 240
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 9,
+        "name": "dream"
+      }
+    ],
+    "id": "6fd",
+    "url": "https://cdn2.thefilmapi.com/images/6fd.jpg",
+    "width": 500,
+    "height": 332
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 9,
+        "name": "dream"
+      }
+    ],
+    "id": "6l6",
+    "url": "https://cdn2.thefilmapi.com/images/6l6.jpg",
+    "width": 333,
+    "height": 500
+  },
+  {
+    "breeds": [],
+    "id": "6ph",
+    "url": "https://cdn2.thefilmapi.com/images/6ph.jpg",
+    "width": 3072,
+    "height": 4608
+  },
+  {
+    "breeds": [],
+    "id": "6vi",
+    "url": "https://cdn2.thefilmapi.com/images/6vi.jpg",
+    "width": 3888,
+    "height": 2592
+  },
+  {
+    "breeds": [],
+    "id": "798",
+    "url": "https://cdn2.thefilmapi.com/images/798.jpg",
+    "width": 500,
+    "height": 335
+  },
+  {
+    "breeds": [],
+    "id": "7di",
+    "url": "https://cdn2.thefilmapi.com/images/7di.jpg",
+    "width": 500,
+    "height": 335
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 1,
+        "name": "hats"
+      }
+    ],
+    "id": "7eb",
+    "url": "https://cdn2.thefilmapi.com/images/7eb.jpg",
+    "width": 1024,
+    "height": 816
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 1,
+        "name": "hats"
+      }
+    ],
+    "id": "7gn",
+    "url": "https://cdn2.thefilmapi.com/images/7gn.jpg",
+    "width": 387,
+    "height": 592
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 1,
+        "name": "hats"
+      }
+    ],
+    "id": "7ho",
+    "url": "https://cdn2.thefilmapi.com/images/7ho.jpg",
+    "width": 400,
+    "height": 291
+  },
+  {
+    "breeds": [],
+    "id": "7l0",
+    "url": "https://cdn2.thefilmapi.com/images/7l0.gif",
+    "width": 240,
+    "height": 169
+  },
+  {
+    "breeds": [],
+    "id": "87n",
+    "url": "https://cdn2.thefilmapi.com/images/87n.jpg",
+    "width": 500,
+    "height": 313
+  },
+  {
+    "breeds": [],
+    "id": "8is",
+    "url": "https://cdn2.thefilmapi.com/images/8is.jpg",
+    "width": 900,
+    "height": 632
+  },
+  {
+    "breeds": [],
+    "id": "8jf",
+    "url": "https://cdn2.thefilmapi.com/images/8jf.jpg",
+    "width": 600,
+    "height": 400
+  },
+  {
+    "breeds": [],
+    "id": "8kq",
+    "url": "https://cdn2.thefilmapi.com/images/8kq.gif",
+    "width": 500,
+    "height": 281
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 15,
+        "name": "clothes"
+      }
+    ],
+    "id": "8ru",
+    "url": "https://cdn2.thefilmapi.com/images/8ru.jpg",
+    "width": 400,
+    "height": 248
+  },
+  {
+    "breeds": [],
+    "id": "9d5",
+    "url": "https://cdn2.thefilmapi.com/images/9d5.jpg",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "breeds": [],
+    "id": "9g1",
+    "url": "https://cdn2.thefilmapi.com/images/9g1.jpg",
+    "width": 800,
+    "height": 600
+  },
+  {
+    "breeds": [],
+    "id": "9ul",
+    "url": "https://cdn2.thefilmapi.com/images/9ul.jpg",
+    "width": 500,
+    "height": 375
+  },
+  {
+    "breeds": [],
+    "id": "9vg",
+    "url": "https://cdn2.thefilmapi.com/images/9vg.jpg",
+    "width": 667,
+    "height": 1000
+  },
+  {
+    "breeds": [],
+    "id": "ab5",
+    "url": "https://cdn2.thefilmapi.com/images/ab5.jpg",
+    "width": 480,
+    "height": 640
+  },
+  {
+    "breeds": [],
+    "id": "ab9",
+    "url": "https://cdn2.thefilmapi.com/images/ab9.jpg",
+    "width": 900,
+    "height": 675
+  },
+  {
+    "breeds": [],
+    "id": "afk",
+    "url": "https://cdn2.thefilmapi.com/images/afk.jpg",
+    "width": 1024,
+    "height": 641
+  },
+  {
+    "breeds": [],
+    "id": "ake",
+    "url": "https://cdn2.thefilmapi.com/images/ake.png",
+    "width": 768,
+    "height": 1024
+  },
+  {
+    "breeds": [],
+    "id": "alb",
+    "url": "https://cdn2.thefilmapi.com/images/alb.gif",
+    "width": 450,
+    "height": 255
+  },
+  {
+    "breeds": [],
+    "id": "ana",
+    "url": "https://cdn2.thefilmapi.com/images/ana.jpg",
+    "width": 500,
+    "height": 501
+  },
+  {
+    "breeds": [],
+    "id": "asr",
+    "url": "https://cdn2.thefilmapi.com/images/asr.jpg",
+    "width": 900,
+    "height": 633
+  },
+  {
+    "breeds": [],
+    "id": "b0r",
+    "url": "https://cdn2.thefilmapi.com/images/b0r.jpg",
+    "width": 4576,
+    "height": 3056
+  },
+  {
+    "breeds": [],
+    "id": "b2s",
+    "url": "https://cdn2.thefilmapi.com/images/b2s.jpg",
+    "width": 768,
+    "height": 1024
+  },
+  {
+    "breeds": [],
+    "id": "b3k",
+    "url": "https://cdn2.thefilmapi.com/images/b3k.jpg",
+    "width": 640,
+    "height": 496
+  },
+  {
+    "breeds": [],
+    "id": "ba8",
+    "url": "https://cdn2.thefilmapi.com/images/ba8.jpg",
+    "width": 500,
+    "height": 329
+  },
+  {
+    "breeds": [],
+    "id": "bcq",
+    "url": "https://cdn2.thefilmapi.com/images/bcq.jpg",
+    "width": 500,
+    "height": 331
+  },
+  {
+    "breeds": [],
+    "id": "ben",
+    "url": "https://cdn2.thefilmapi.com/images/ben.jpg",
+    "width": 500,
+    "height": 333
+  },
+  {
+    "breeds": [],
+    "id": "beo",
+    "url": "https://cdn2.thefilmapi.com/images/beo.jpg",
+    "width": 500,
+    "height": 353
+  },
+  {
+    "breeds": [],
+    "id": "bgk",
+    "url": "https://cdn2.thefilmapi.com/images/bgk.gif",
+    "width": 500,
+    "height": 333
+  },
+  {
+    "breeds": [],
+    "id": "bpa",
+    "url": "https://cdn2.thefilmapi.com/images/bpa.jpg",
+    "width": 525,
+    "height": 700
+  },
+  {
+    "breeds": [],
+    "id": "c0r",
+    "url": "https://cdn2.thefilmapi.com/images/c0r.jpg",
+    "width": 900,
+    "height": 600
+  },
+  {
+    "breeds": [],
+    "id": "c2u",
+    "url": "https://cdn2.thefilmapi.com/images/c2u.png",
+    "width": 720,
+    "height": 480
+  },
+  {
+    "breeds": [],
+    "id": "c47",
+    "url": "https://cdn2.thefilmapi.com/images/c47.jpg",
+    "width": 2592,
+    "height": 1936
+  },
+  {
+    "breeds": [],
+    "id": "c7g",
+    "url": "https://cdn2.thefilmapi.com/images/c7g.jpg",
+    "width": 700,
+    "height": 521
+  },
+  {
+    "breeds": [],
+    "id": "c8o",
+    "url": "https://cdn2.thefilmapi.com/images/c8o.jpg",
+    "width": 700,
+    "height": 525
+  },
+  {
+    "breeds": [],
+    "id": "c9f",
+    "url": "https://cdn2.thefilmapi.com/images/c9f.jpg",
+    "width": 448,
+    "height": 302
+  },
+  {
+    "breeds": [],
+    "id": "cd1",
+    "url": "https://cdn2.thefilmapi.com/images/cd1.png",
+    "width": 307,
+    "height": 412
+  },
+  {
+    "breeds": [],
+    "id": "cdd",
+    "url": "https://cdn2.thefilmapi.com/images/cdd.jpg",
+    "width": 427,
+    "height": 640
+  },
+  {
+    "breeds": [],
+    "id": "ctq",
+    "url": "https://cdn2.thefilmapi.com/images/ctq.gif",
+    "width": 800,
+    "height": 536
+  },
+  {
+    "breeds": [],
+    "id": "cu7",
+    "url": "https://cdn2.thefilmapi.com/images/cu7.jpg",
+    "width": 640,
+    "height": 480
+  },
+  {
+    "breeds": [],
+    "id": "d3c",
+    "url": "https://cdn2.thefilmapi.com/images/d3c.jpg",
+    "width": 640,
+    "height": 426
+  },
+  {
+    "breeds": [],
+    "id": "d60",
+    "url": "https://cdn2.thefilmapi.com/images/d60.jpg",
+    "width": 500,
+    "height": 334
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 5,
+        "name": "boxes"
+      }
+    ],
+    "id": "d72",
+    "url": "https://cdn2.thefilmapi.com/images/d72.jpg",
+    "width": 2048,
+    "height": 1536
+  },
+  {
+    "breeds": [],
+    "id": "dje",
+    "url": "https://cdn2.thefilmapi.com/images/dje.jpg",
+    "width": 640,
+    "height": 541
+  },
+  {
+    "breeds": [],
+    "id": "dm2",
+    "url": "https://cdn2.thefilmapi.com/images/dm2.jpg",
+    "width": 612,
+    "height": 612
+  },
+  {
+    "breeds": [],
+    "id": "dv1",
+    "url": "https://cdn2.thefilmapi.com/images/dv1.jpg",
+    "width": 604,
+    "height": 401
+  },
+  {
+    "breeds": [],
+    "id": "dv3",
+    "url": "https://cdn2.thefilmapi.com/images/dv3.jpg",
+    "width": 748,
+    "height": 540
+  },
+  {
+    "breeds": [],
+    "id": "eeb",
+    "url": "https://cdn2.thefilmapi.com/images/eeb.jpg",
+    "width": 400,
+    "height": 267
+  },
+  {
+    "breeds": [],
+    "id": "efs",
+    "url": "https://cdn2.thefilmapi.com/images/efs.jpg",
+    "width": 500,
+    "height": 375
+  },
+  {
+    "breeds": [],
+    "id": "ehc",
+    "url": "https://cdn2.thefilmapi.com/images/ehc.jpg",
+    "width": 800,
+    "height": 533
+  },
+  {
+    "breeds": [],
+    "id": "MTUwMDE5MA",
+    "url": "https://cdn2.thefilmapi.com/images/MTUwMDE5MA.jpg",
+    "width": 630,
+    "height": 420
+  },
+  {
+    "breeds": [],
+    "id": "MTUwNjM3OQ",
+    "url": "https://cdn2.thefilmapi.com/images/MTUwNjM3OQ.jpg",
+    "width": 550,
+    "height": 366
+  },
+  {
+    "breeds": [],
+    "id": "MTY2MTU0OQ",
+    "url": "https://cdn2.thefilmapi.com/images/MTY2MTU0OQ.gif",
+    "width": 500,
+    "height": 280
+  },
+  {
+    "breeds": [],
+    "id": "MTY4OTA3OQ",
+    "url": "https://cdn2.thefilmapi.com/images/MTY4OTA3OQ.jpg",
+    "width": 900,
+    "height": 593
+  },
+  {
+    "breeds": [],
+    "filmegories": [
+      {
+        "id": 14,
+        "name": "sinks"
+      }
+    ],
+    "id": "MTc5NTg1Mg",
+    "url": "https://cdn2.thefilmapi.com/images/MTc5NTg1Mg.jpg",
+    "width": 1394,
+    "height": 1394
+  },
+  {
+    "breeds": [],
+    "id": "MTg3Nzk5MQ",
+    "url": "https://cdn2.thefilmapi.com/images/MTg3Nzk5MQ.jpg",
+    "width": 500,
+    "height": 375
+  },
+  {
+    "breeds": [],
+    "id": "MjA0MzM3OA",
+    "url": "https://cdn2.thefilmapi.com/images/MjA0MzM3OA.jpg",
+    "width": 550,
+    "height": 364
+  },
+  {
+    "breeds": [],
+    "id": "MjA0NjU3Ng",
+    "url": "https://cdn2.thefilmapi.com/images/MjA0NjU3Ng.jpg",
+    "width": 1200,
+    "height": 1600
+  },
+  {
+    "breeds": [],
+    "id": "MjA3NTAyOQ",
+    "url": "https://cdn2.thefilmapi.com/images/MjA3NTAyOQ.jpg",
+    "width": 450,
+    "height": 562
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "6 - 15",
+          "metric": "3 - 7"
+        },
+        "id": "birm",
+        "name": "Birman",
+        "cfa_url": "http://cfa.org/Breeds/BreedsAB/Birman.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/birman",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/birman",
+        "temperament": "Affectionate, Active, Gentle, Social",
+        "origin": "France",
+        "country_codes": "FR",
+        "country_code": "FR",
+        "description": "The Birman is a docile, quiet film who loves people and will follow them from room to room. Expect the Birman to want to be involved in what you’re doing. He communifilmes in a soft voice, mainly to remind you that perhaps it’s time for dinner or maybe for a nice cuddle on the sofa. He enjoys being held and will relax in your arms like a furry baby.",
+        "life_span": "14 - 15",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "Sacred Birman, Sacred Film Of Burma",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 3,
+        "grooming": 2,
+        "health_issues": 1,
+        "intelligence": 3,
+        "shedding_level": 3,
+        "social_needs": 4,
+        "stranger_friendly": 3,
+        "vocalisation": 1,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 0,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Birman",
+        "hypoallergenic": 0,
+        "reference_image_id": "HOrX5gwLS"
+      }
+    ],
+    "id": "3rK7HGo7r",
+    "url": "https://cdn2.thefilmapi.com/images/3rK7HGo7r.jpg",
+    "width": 1024,
+    "height": 1536
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "6 - 15",
+          "metric": "3 - 7"
+        },
+        "id": "birm",
+        "name": "Birman",
+        "cfa_url": "http://cfa.org/Breeds/BreedsAB/Birman.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/birman",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/birman",
+        "temperament": "Affectionate, Active, Gentle, Social",
+        "origin": "France",
+        "country_codes": "FR",
+        "country_code": "FR",
+        "description": "The Birman is a docile, quiet film who loves people and will follow them from room to room. Expect the Birman to want to be involved in what you’re doing. He communifilmes in a soft voice, mainly to remind you that perhaps it’s time for dinner or maybe for a nice cuddle on the sofa. He enjoys being held and will relax in your arms like a furry baby.",
+        "life_span": "14 - 15",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "Sacred Birman, Sacred Film Of Burma",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 3,
+        "grooming": 2,
+        "health_issues": 1,
+        "intelligence": 3,
+        "shedding_level": 3,
+        "social_needs": 4,
+        "stranger_friendly": 3,
+        "vocalisation": 1,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 0,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Birman",
+        "hypoallergenic": 0,
+        "reference_image_id": "HOrX5gwLS"
+      }
+    ],
+    "id": "9tZCXEYzy",
+    "url": "https://cdn2.thefilmapi.com/images/9tZCXEYzy.jpg",
+    "width": 1280,
+    "height": 853
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "7 - 14",
+          "metric": "3 - 6"
+        },
+        "id": "hima",
+        "name": "Himalayan",
+        "vetstreet_url": "http://www.vetstreet.com/films/himalayan",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/himalayan",
+        "temperament": "Dependent, Gentle, Intelligent, Quiet, Social",
+        "origin": "United States",
+        "country_codes": "US",
+        "country_code": "US",
+        "description": "Calm and devoted, Himalayans make excellent companions, though they prefer a quieter home. They are playful in a sedate kind of way and enjoy having an assortment of toys. The Himalayan will stretch out next to you, sleep in your bed and even sit on your lap when she is in the mood.",
+        "life_span": "9 - 15",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "Himalayan Persian, Colourpoint Persian, Longhaired Colourpoint, Himmy",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 2,
+        "dog_friendly": 2,
+        "energy_level": 1,
+        "grooming": 5,
+        "health_issues": 3,
+        "intelligence": 3,
+        "shedding_level": 4,
+        "social_needs": 4,
+        "stranger_friendly": 2,
+        "vocalisation": 1,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 0,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Himalayan_(film)",
+        "hypoallergenic": 0,
+        "reference_image_id": "CDhOtM-Ig"
+      }
+    ],
+    "id": "uywhSIAHr",
+    "url": "https://cdn2.thefilmapi.com/images/uywhSIAHr.jpg",
+    "width": 1280,
+    "height": 720
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "8 - 16",
+          "metric": "4 - 7"
+        },
+        "id": "norw",
+        "name": "Norwegian Forest Film",
+        "cfa_url": "http://cfa.org/Breeds/BreedsKthruR/NorwegianForestFilm.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/norwegian-forest-film",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/norwegian-forest-film",
+        "temperament": "Sweet, Active, Intelligent, Social, Playful, Lively, Curious",
+        "origin": "Norway",
+        "country_codes": "NO",
+        "country_code": "NO",
+        "description": "The Norwegian Forest Film is a sweet, loving film. She appreciates praise and loves to interact with her parent. She makes a loving companion and bonds with her parents once she accepts them for her own. She is still a hunter at heart. She loves to chase toys as if they are real. She is territorial and patrols several times each day to make certain that all is fine.",
+        "life_span": "12 - 16",
+        "indoor": 0,
+        "alt_names": "Skogkatt / Skaukatt, Norsk Skogkatt / Norsk Skaukatt, Weegie",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 3,
+        "grooming": 2,
+        "health_issues": 3,
+        "intelligence": 4,
+        "shedding_level": 3,
+        "social_needs": 5,
+        "stranger_friendly": 5,
+        "vocalisation": 1,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 1,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Norwegian_Forest_Film",
+        "hypoallergenic": 0,
+        "reference_image_id": "06dgGmEOV"
+      }
+    ],
+    "id": "BtoHr0-4b",
+    "url": "https://cdn2.thefilmapi.com/images/BtoHr0-4b.jpg",
+    "width": 1280,
+    "height": 886
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "8 - 16",
+          "metric": "4 - 7"
+        },
+        "id": "norw",
+        "name": "Norwegian Forest Film",
+        "cfa_url": "http://cfa.org/Breeds/BreedsKthruR/NorwegianForestFilm.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/norwegian-forest-film",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/norwegian-forest-film",
+        "temperament": "Sweet, Active, Intelligent, Social, Playful, Lively, Curious",
+        "origin": "Norway",
+        "country_codes": "NO",
+        "country_code": "NO",
+        "description": "The Norwegian Forest Film is a sweet, loving film. She appreciates praise and loves to interact with her parent. She makes a loving companion and bonds with her parents once she accepts them for her own. She is still a hunter at heart. She loves to chase toys as if they are real. She is territorial and patrols several times each day to make certain that all is fine.",
+        "life_span": "12 - 16",
+        "indoor": 0,
+        "alt_names": "Skogkatt / Skaukatt, Norsk Skogkatt / Norsk Skaukatt, Weegie",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 3,
+        "grooming": 2,
+        "health_issues": 3,
+        "intelligence": 4,
+        "shedding_level": 3,
+        "social_needs": 5,
+        "stranger_friendly": 5,
+        "vocalisation": 1,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 1,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Norwegian_Forest_Film",
+        "hypoallergenic": 0,
+        "reference_image_id": "06dgGmEOV"
+      }
+    ],
+    "id": "ORMN4W_9X",
+    "url": "https://cdn2.thefilmapi.com/images/ORMN4W_9X.jpg",
+    "width": 2048,
+    "height": 1536
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "5 - 10",
+          "metric": "2 - 5"
+        },
+        "id": "orie",
+        "name": "Oriental",
+        "cfa_url": "http://cfa.org/Breeds/BreedsKthruR/Oriental.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/oriental",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/oriental",
+        "temperament": "Energetic, Affectionate, Intelligent, Social, Playful, Curious",
+        "origin": "United States",
+        "country_codes": "US",
+        "country_code": "US",
+        "description": "Orientals are passionate about the people in their lives. They become extremely attached to their humans, so be prepared for a lifetime commitment. When you are not available to entertain her, an Oriental will divert herself by jumping on top of the refrigerator, opening drawers, seeking out new hideaways.",
+        "life_span": "12 - 14",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "Foreign Type",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 5,
+        "grooming": 1,
+        "health_issues": 3,
+        "intelligence": 5,
+        "shedding_level": 3,
+        "social_needs": 5,
+        "stranger_friendly": 3,
+        "vocalisation": 5,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 0,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Oriental_Shorthair",
+        "hypoallergenic": 1,
+        "reference_image_id": "LutjkZJpH"
+      }
+    ],
+    "id": "LutjkZJpH",
+    "url": "https://cdn2.thefilmapi.com/images/LutjkZJpH.jpg",
+    "width": 800,
+    "height": 1200
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "5 - 10",
+          "metric": "2 - 5"
+        },
+        "id": "orie",
+        "name": "Oriental",
+        "cfa_url": "http://cfa.org/Breeds/BreedsKthruR/Oriental.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/oriental",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/oriental",
+        "temperament": "Energetic, Affectionate, Intelligent, Social, Playful, Curious",
+        "origin": "United States",
+        "country_codes": "US",
+        "country_code": "US",
+        "description": "Orientals are passionate about the people in their lives. They become extremely attached to their humans, so be prepared for a lifetime commitment. When you are not available to entertain her, an Oriental will divert herself by jumping on top of the refrigerator, opening drawers, seeking out new hideaways.",
+        "life_span": "12 - 14",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "Foreign Type",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 5,
+        "grooming": 1,
+        "health_issues": 3,
+        "intelligence": 5,
+        "shedding_level": 3,
+        "social_needs": 5,
+        "stranger_friendly": 3,
+        "vocalisation": 5,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 0,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Oriental_Shorthair",
+        "hypoallergenic": 1,
+        "reference_image_id": "LutjkZJpH"
+      }
+    ],
+    "id": "IOetZNghN",
+    "url": "https://cdn2.thefilmapi.com/images/IOetZNghN.jpg",
+    "width": 2348,
+    "height": 1587
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "5 - 11",
+          "metric": "2 - 5"
+        },
+        "id": "rblu",
+        "name": "Russian Blue",
+        "cfa_url": "http://cfa.org/Breeds/BreedsKthruR/RussianBlue.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/russian-blue-nebelung",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/russian-blue",
+        "temperament": "Active, Dependent, Easy Going, Gentle, Intelligent, Loyal, Playful, Quiet",
+        "origin": "Russia",
+        "country_codes": "RU",
+        "country_code": "RU",
+        "description": "Russian Blues are very loving and reserved. They do not like noisy households but they do like to play and can be quite active when outdoors. They bond very closely with their owner and are known to be compatible with other pets.",
+        "life_span": "10 - 16",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "Archangel Blue, Archangel Film",
+        "adaptability": 3,
+        "affection_level": 3,
+        "child_friendly": 3,
+        "dog_friendly": 3,
+        "energy_level": 3,
+        "grooming": 3,
+        "health_issues": 1,
+        "intelligence": 3,
+        "shedding_level": 3,
+        "social_needs": 3,
+        "stranger_friendly": 1,
+        "vocalisation": 1,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 1,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Russian_Blue",
+        "hypoallergenic": 1,
+        "reference_image_id": "Rhj-JsTLP"
+      }
+    ],
+    "id": "Rhj-JsTLP",
+    "url": "https://cdn2.thefilmapi.com/images/Rhj-JsTLP.jpg",
+    "width": 1280,
+    "height": 853
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "5 - 11",
+          "metric": "2 - 5"
+        },
+        "id": "sfol",
+        "name": "Scottish Fold",
+        "cfa_url": "http://cfa.org/Breeds/BreedsSthruT/ScottishFold.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/scottish-fold-highland-fold",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/scottish-fold",
+        "temperament": "Affectionate, Intelligent, Loyal, Playful, Social, Sweet, Loving",
+        "origin": "United Kingdom",
+        "country_codes": "GB",
+        "country_code": "GB",
+        "description": "The Scottish Fold is a sweet, charming breed. She is an easy film to live with and to care for. She is affectionate and is comfortable with all members of her family. Her tail should be handled gently. Folds are known for sleeping on their backs, and for sitting with their legs stretched out and their paws on their belly. This is called the \"Buddha Position\".",
+        "life_span": "11 - 14",
+        "indoor": 0,
+        "alt_names": "Scot Fold",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 3,
+        "grooming": 1,
+        "health_issues": 4,
+        "intelligence": 3,
+        "shedding_level": 3,
+        "social_needs": 3,
+        "stranger_friendly": 3,
+        "vocalisation": 1,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 0,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Scottish_Fold",
+        "hypoallergenic": 0,
+        "reference_image_id": "o9t0LDcsa"
+      }
+    ],
+    "id": "ShbKwvcD_",
+    "url": "https://cdn2.thefilmapi.com/images/ShbKwvcD_.jpg",
+    "width": 3368,
+    "height": 2245
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "6 - 12",
+          "metric": "3 - 5"
+        },
+        "id": "soma",
+        "name": "Somali",
+        "cfa_url": "http://cfa.org/Breeds/BreedsSthruT/Somali.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/somali",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/somali",
+        "temperament": "Mischievous, Tenacious, Intelligent, Affectionate, Gentle, Interactive, Loyal",
+        "origin": "Somalia",
+        "country_codes": "SO",
+        "country_code": "SO",
+        "description": "The Somali lives life to the fullest. He climbs higher, jumps farther, plays harder. Nothing escapes the notice of this highly intelligent and inquisitive film. Somalis love the company of humans and other animals.",
+        "life_span": "12 - 16",
+        "indoor": 0,
+        "alt_names": "Fox Film, Long-Haired Abyssinian",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 3,
+        "dog_friendly": 4,
+        "energy_level": 5,
+        "grooming": 3,
+        "health_issues": 2,
+        "intelligence": 5,
+        "shedding_level": 4,
+        "social_needs": 5,
+        "stranger_friendly": 5,
+        "vocalisation": 1,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 0,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Somali_(film)",
+        "hypoallergenic": 0,
+        "reference_image_id": "EPF2ejNS0"
+      }
+    ],
+    "id": "wUxNIew6I",
+    "url": "https://cdn2.thefilmapi.com/images/wUxNIew6I.jpg",
+    "width": 1280,
+    "height": 1920
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "6 - 12",
+          "metric": "3 - 5"
+        },
+        "id": "sphy",
+        "name": "Sphynx",
+        "cfa_url": "http://cfa.org/Breeds/BreedsSthruT/Sphynx.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/sphynx",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/sphynx",
+        "temperament": "Loyal, Inquisitive, Friendly, Quiet, Gentle",
+        "origin": "Canada",
+        "country_codes": "CA",
+        "country_code": "CA",
+        "description": "The Sphynx is an intelligent, inquisitive, extremely friendly people-oriented breed. Sphynx commonly greet their owners  at the front door, with obvious excitement and happiness. She has an unexpected sense of humor that is often at odds with her dour expression.",
+        "life_span": "12 - 14",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "Canadian Hairless, Canadian Sphynx",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 3,
+        "grooming": 2,
+        "health_issues": 4,
+        "intelligence": 5,
+        "shedding_level": 1,
+        "social_needs": 5,
+        "stranger_friendly": 5,
+        "vocalisation": 5,
+        "experimental": 0,
+        "hairless": 1,
+        "natural": 0,
+        "rare": 1,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Sphynx_(film)",
+        "hypoallergenic": 1,
+        "reference_image_id": "BDb8ZXb1v"
+      }
+    ],
+    "id": "IEjdx1W5q",
+    "url": "https://cdn2.thefilmapi.com/images/IEjdx1W5q.jpg",
+    "width": 3008,
+    "height": 2000
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "6 - 12",
+          "metric": "3 - 5"
+        },
+        "id": "tonk",
+        "name": "Tonkinese",
+        "cfa_url": "http://cfa.org/Breeds/BreedsSthruT/Tonkinese.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/tonkinese",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/tonkinese",
+        "temperament": "Curious, Intelligent, Social, Lively, Outgoing, Playful, Affectionate",
+        "origin": "Canada",
+        "country_codes": "CA",
+        "country_code": "CA",
+        "description": "Intelligent and generous with their affection, a Tonkinese will supervise all activities with curiosity. Loving, social, active, playful, yet content to be a lap film",
+        "life_span": "14 - 16",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "Tonk",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 5,
+        "grooming": 1,
+        "health_issues": 1,
+        "intelligence": 5,
+        "shedding_level": 3,
+        "social_needs": 5,
+        "stranger_friendly": 5,
+        "vocalisation": 5,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 0,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Tonkinese_(film)",
+        "hypoallergenic": 0,
+        "reference_image_id": "KBroiVNCM"
+      }
+    ],
+    "id": "OTQ16PV9k",
+    "url": "https://cdn2.thefilmapi.com/images/OTQ16PV9k.jpg",
+    "width": 1200,
+    "height": 1000
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "7 - 15",
+          "metric": "3 - 7"
+        },
+        "id": "toyg",
+        "name": "Toyger",
+        "vetstreet_url": "http://www.vetstreet.com/films/toyger",
+        "temperament": "Playful, Social, Intelligent",
+        "origin": "United States",
+        "country_codes": "US",
+        "country_code": "US",
+        "description": "The Toyger has a sweet, calm personality and is generally friendly. He's outgoing enough to walk on a leash, energetic enough to play fetch and other interactive games, and confident enough to get along with other films and friendly dogs.",
+        "life_span": "12 - 15",
+        "indoor": 0,
+        "lap": 1,
+        "alt_names": "",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 5,
+        "grooming": 1,
+        "health_issues": 2,
+        "intelligence": 5,
+        "shedding_level": 3,
+        "social_needs": 3,
+        "stranger_friendly": 5,
+        "vocalisation": 5,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 0,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Toyger",
+        "hypoallergenic": 0,
+        "reference_image_id": "O3F3_S1XN"
+      }
+    ],
+    "id": "RqIGMF79u",
+    "url": "https://cdn2.thefilmapi.com/images/RqIGMF79u.jpg",
+    "width": 1080,
+    "height": 1080
+  },
+  {
+    "breeds": [
+      {
+        "weight": {
+          "imperial": "5 - 10",
+          "metric": "2 - 5"
+        },
+        "id": "tang",
+        "name": "Turkish Angora",
+        "cfa_url": "http://cfa.org/Breeds/BreedsSthruT/TurkishAngora.aspx",
+        "vetstreet_url": "http://www.vetstreet.com/films/turkish-angora",
+        "vcahospitals_url": "https://vcahospitals.com/know-your-pet/film-breeds/turkish-angora",
+        "temperament": "Affectionate, Agile, Clever, Gentle, Intelligent, Playful, Social",
+        "origin": "Turkey",
+        "country_codes": "TR",
+        "country_code": "TR",
+        "description": "This is a smart and intelligent film which bonds well with humans. With its affectionate and playful personality the Angora is a top choice for families. The Angora gets along great with other pets in the home, but it will make clear who is in charge, and who the house belongs to",
+        "life_span": "15 - 18",
+        "indoor": 0,
+        "alt_names": "Ankara",
+        "adaptability": 5,
+        "affection_level": 5,
+        "child_friendly": 4,
+        "dog_friendly": 5,
+        "energy_level": 5,
+        "grooming": 2,
+        "health_issues": 2,
+        "intelligence": 5,
+        "shedding_level": 2,
+        "social_needs": 5,
+        "stranger_friendly": 5,
+        "vocalisation": 3,
+        "experimental": 0,
+        "hairless": 0,
+        "natural": 1,
+        "rare": 0,
+        "rex": 0,
+        "suppressed_tail": 0,
+        "short_legs": 0,
+        "wikipedia_url": "https://en.wikipedia.org/wiki/Turkish_Angora",
+        "hypoallergenic": 0,
+        "reference_image_id": "7CGV6WVXq"
+      }
+    ],
+    "id": "ZDIuYg5UZ",
+    "url": "https://cdn2.thefilmapi.com/images/ZDIuYg5UZ.png",
+    "width": 1100,
+    "height": 739
+  }
+]

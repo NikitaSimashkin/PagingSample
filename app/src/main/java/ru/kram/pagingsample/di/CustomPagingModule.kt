@@ -10,22 +10,21 @@ val customPagingModule = module {
 
     viewModel {
         SimplePagerViewModel(
-            catsRepository = get(),
-            catsRemoteDataSource = get(),
+            filmsRepository = get(),
+            filmsRemoteDataSource = get(),
         )
     }
 
     viewModel {
         SimplePagerWithLoadingStateViewModel(
-            catsRepository = get(),
-            catsRemoteDataSource = get(),
+            filmsRepository = get(),
+            filmsRemoteDataSource = get(),
         )
     }
 
     viewModel {
         JumpablePagerViewModel(
-            catsRepository = get(),
-            catsRemoteDataSource = get(),
+            filmsRepository = get(),
         )
     }
 }

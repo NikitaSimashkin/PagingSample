@@ -8,33 +8,32 @@ import kotlinx.coroutines.launch
 import ru.kram.pagerlib.data.PagedDataSource
 import ru.kram.pagerlib.model.Page
 import ru.kram.pagerlib.pagers.SimplePager
-import ru.kram.pagingsample.data.CatsRepository
-import ru.kram.pagingsample.data.remote.CatsRemoteDataSource
-import ru.kram.pagingsample.ui.catlist.model.CatItemData
-import ru.kram.pagingsample.ui.catlist.model.CatsScreenState
+import ru.kram.pagingsample.data.FilmsRepository
+import ru.kram.pagingsample.data.remote.FilmsRemoteDataSource
+import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
+import ru.kram.pagingsample.ui.filmlist.model.FilmsScreenState
 import timber.log.Timber
 
 class SimplePagerViewModel(
-    private val catsRepository: CatsRepository,
-    private val catsRemoteDataSource: CatsRemoteDataSource,
+    private val filmsRepository: FilmsRepository,
+    private val filmsRemoteDataSource: FilmsRemoteDataSource,
 ): ViewModel() {
 
-    val screenState = MutableStateFlow(CatsScreenState.EMPTY)
+    val screenState = MutableStateFlow(FilmsScreenState.EMPTY)
 
     private val pager = SimplePager(
         pageSize = PAGE_SIZE,
         maxPagesToKeep = 3,
         threshold = PAGE_SIZE / 2,
         initialPage = 0,
-        dataSource = object: PagedDataSource<CatItemData, Int> {
-            override suspend fun loadData(key: Int, pageSize: Int): Page<CatItemData, Int> {
-                val items = catsRemoteDataSource.getCats(limit = pageSize, offset = pageSize * key).cats.mapIndexed { index, it ->
-                    CatItemData(
+        dataSource = object: PagedDataSource<FilmItemData, Int> {
+            override suspend fun loadData(key: Int, pageSize: Int): Page<FilmItemData, Int> {
+                val items = filmsRemoteDataSource.getFilms(limit = pageSize, offset = pageSize * key).films.mapIndexed { index, it ->
+                    FilmItemData(
                         id = it.id,
                         imageUrl = it.imageUrl,
                         name = it.name,
-                        breed = it.breed,
-                        age = it.age,
+                        year = it.year,
                         createdAt = it.createdAt,
                         number = it.number,
                     )
@@ -50,13 +49,13 @@ class SimplePagerViewModel(
         },
     )
 
-    val cats = pager.data
+    val films = pager.data
 
     override fun onCleared() {
         Timber.d("onCleared")
     }
 
-    fun updateListInfo(itemsInMemory: Int, items: List<CatItemData?>) {
+    fun updateListInfo(itemsInMemory: Int, items: List<FilmItemData?>) {
         screenState.update {
             it.copy(
                 infoBlockData = it.infoBlockData.copy(
@@ -64,33 +63,33 @@ class SimplePagerViewModel(
                 )
             )
         }
-        Timber.d("updateListInfo: cats=${items.joinToString(",") { it?.name.orEmpty() }}, itemsInMemory=$itemsInMemory")
+        Timber.d("updateListInfo: films=${items.joinToString(",") { it?.name.orEmpty() }}, itemsInMemory=$itemsInMemory")
     }
 
-    fun onAddOneCats() {
+    fun onAddOneFilms() {
         viewModelScope.launch {
-            catsRepository.addCat()
+            filmsRepository.addFilm()
             pager.invalidate()
         }
     }
 
-    fun onAdd100Cats() {
+    fun onAdd100Films() {
         viewModelScope.launch {
-            catsRepository.addCats(100)
+            filmsRepository.addFilms(100)
             pager.invalidate()
         }
     }
 
     fun clearLocalDb() {
         viewModelScope.launch {
-            catsRepository.clearLocal()
+            filmsRepository.clearLocal()
             pager.invalidate()
         }
     }
 
-    fun clearUserCats() {
+    fun clearUserFilms() {
         viewModelScope.launch {
-            catsRepository.clearUserCats()
+            filmsRepository.clearUserFilms()
             pager.invalidate()
         }
     }
@@ -101,9 +100,9 @@ class SimplePagerViewModel(
         }
     }
 
-    fun deleteCat(cat: CatItemData) {
+    fun deleteFilm(film: FilmItemData) {
         viewModelScope.launch {
-            catsRepository.deleteCat(cat.id)
+            filmsRepository.deleteFilm(film.id)
             pager.invalidate()
         }
     }

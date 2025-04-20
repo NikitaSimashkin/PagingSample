@@ -10,7 +10,7 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import ru.kram.pagingsample.core.RoomTransactionHelper
 import ru.kram.pagingsample.core.ServerDatabaseTransactionHelper
-import ru.kram.pagingsample.data.db.server.CatServerDatabase
+import ru.kram.pagingsample.data.db.server.FilmServerDatabase
 import ru.kram.pagingsample.data.db.PersistentTableLoader
 import ru.kram.pagingsample.data.db.ServerDatabaseInitializer
 
@@ -21,11 +21,11 @@ val serverModule = module {
     }
 
     single {
-        get<CatServerDatabase>().catPersistentDao()
+        get<FilmServerDatabase>().filmPersistentDao()
     }
 
     single {
-        get<CatServerDatabase>().userCatDao()
+        get<FilmServerDatabase>().userFilmDao()
     }
 
     single {
@@ -38,7 +38,7 @@ val serverModule = module {
 
     single {
         ServerDatabaseTransactionHelper(
-            get<CatServerDatabase>(),
+            get<FilmServerDatabase>(),
             get()
         )
     }
@@ -49,11 +49,11 @@ val serverModule = module {
 
 private fun getServerDatabase(
     context: Context
-): CatServerDatabase {
+): FilmServerDatabase {
     return Room.databaseBuilder(
         context,
-        CatServerDatabase::class.java,
-        CatServerDatabase.DATABASE_NAME
+        FilmServerDatabase::class.java,
+        FilmServerDatabase.DATABASE_NAME
     )
         .fallbackToDestructiveMigration()
         .build()

@@ -16,33 +16,34 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.onStart
 import org.koin.androidx.compose.koinViewModel
-import ru.kram.pagingsample.ui.catlist.CatItem
-import ru.kram.pagingsample.ui.catlist.CatListBaseScreen
+import ru.kram.pagingsample.ui.filmlist.FilmItem
+import ru.kram.pagingsample.ui.filmlist.FilmListBaseScreen
+import ru.kram.pagingsample.ui.filmlist.FilmItem
 
 @Composable
 fun SimplePagerScreen(
     modifier: Modifier = Modifier,
-    smallCats: Boolean = false,
+    smallFilms: Boolean = false,
 ) {
     val viewModel = koinViewModel<SimplePagerViewModel>()
     val state by viewModel.screenState.collectAsStateWithLifecycle()
 
     val scrollState = rememberLazyListState()
 
-    CatListBaseScreen(
+    FilmListBaseScreen(
         infoBlockData = state.infoBlockData,
         pagesBlockData = state.pagesBlockData,
-        onAddOneCats = viewModel::onAddOneCats,
-        onAdd100Cats = viewModel::onAdd100Cats,
-        onClearAllUserCats = viewModel::clearUserCats,
+        onAddOneFilms = viewModel::onAddOneFilms,
+        onAdd100Films = viewModel::onAdd100Films,
+        onClearAllUserFilms = viewModel::clearUserFilms,
         onClearLocalDb = viewModel::clearLocalDb,
         modifier = modifier,
     ) {
-        val cats = viewModel.cats.collectAsStateWithLifecycle()
+        val films = viewModel.films.collectAsStateWithLifecycle()
 
         LaunchedEffect(Unit) {
             snapshotFlow {
-                viewModel.updateListInfo(cats.value.size, cats.value)
+                viewModel.updateListInfo(films.value.size, films.value)
             }.collect {}
         }
         LazyColumn(
@@ -52,16 +53,17 @@ fun SimplePagerScreen(
             state = scrollState,
         ) {
             items(
-                count = cats.value.size,
-                key = { index -> cats.value[index].id },
+                count = films.value.size,
+                key = { index -> films.value[index].id },
             ) { index ->
-                val cat = cats.value[index]
-                CatItem(
-                    catItemData = cat,
-                    onDeleteClick = { viewModel.deleteCat(cat) },
+                val film = films.value[index]
+                FilmItem(
+                    filmItemData = film,
+                    onDeleteClick = { viewModel.deleteFilm(film) },
                     onRenameClick = {},
-                    showOnlyNumber = smallCats,
-                    modifier = if (smallCats) Modifier.height(75.dp) else Modifier
+                    showOnlyNumber = smallFilms,
+                    modifier = if (smallFilms) Modifier.height(75.dp) else Modifier,
+                    index = index,
                 )
             }
         }
@@ -90,8 +92,8 @@ fun PagerObserver(
             }
         }.onStart {
             emit(0)
-        }.collect { visibleCat ->
-            onIndexVisible(visibleCat)
+        }.collect { visibleFilm ->
+            onIndexVisible(visibleFilm)
         }
     }
 }

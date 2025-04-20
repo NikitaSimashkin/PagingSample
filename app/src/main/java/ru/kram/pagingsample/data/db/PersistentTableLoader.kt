@@ -5,9 +5,9 @@ import com.github.javafaker.Faker
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CancellationException
-import ru.kram.pagingsample.core.CatDispatchers
-import ru.kram.pagingsample.data.db.server.persistent.CatPersistentDao
-import ru.kram.pagingsample.data.db.server.persistent.CatPersistentEntity
+import ru.kram.pagingsample.core.FilmDispatchers
+import ru.kram.pagingsample.data.db.server.persistent.FilmPersistentDao
+import ru.kram.pagingsample.data.db.server.persistent.FilmPersistentEntity
 import timber.log.Timber
 import java.util.UUID
 
@@ -15,39 +15,36 @@ class PersistentTableLoader(
     private val context: Context,
     private val faker: Faker,
     private val gson: Gson,
-    private val catPersistentDao: CatPersistentDao,
-    private val dispatchers: CatDispatchers,
+    private val filmPersistentDao: FilmPersistentDao,
+    private val dispatchers: FilmDispatchers,
 ) {
 
-    suspend fun loadCats() = dispatchers.io {
-        val fileNames = (0..20).map { "cat_page${it}.json" }
+    suspend fun loadFilms() = dispatchers.io {
+        val file = "films.json"
 
-        fileNames.forEach { fileName ->
-            try {
-                val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
-                val cats: List<CatJson> = gson.fromJson(
-                    json,
-                    (object : TypeToken<List<CatJson>>() {}).type
+        try {
+            val json = context.assets.open(file).bufferedReader().use { it.readText() }
+            val films: List<FilmJson> = gson.fromJson(
+                json,
+                (object : TypeToken<List<FilmJson>>() {}).type
+            )
+
+            films.map { film ->
+                FilmPersistentEntity(
+                    id = UUID.randomUUID().toString(),
+                    name = film.title,
+                    age = film.year.toInt(),
+                    imageUrl = film.posterUrl,
                 )
-
-                cats.mapIndexed { _, cat ->
-                    CatPersistentEntity(
-                        id = UUID.randomUUID().toString(),
-                        name = faker.cat().name(),
-                        breed = faker.cat().breed(),
-                        age = faker.number().numberBetween(1, 20),
-                        imageUrl = cat.url,
-                    )
-                }.apply {
-                    catPersistentDao.insertAll(this)
-                }
-            } catch (ce: CancellationException) {
-                throw ce
-            } catch (e: Exception) {
-                Timber.d(e)
+            }.apply {
+                filmPersistentDao.insertAll(this)
             }
+        } catch (ce: CancellationException) {
+            throw ce
+        } catch (e: Exception) {
+            Timber.d(e)
         }
     }
 
-    private data class CatJson(val url: String)
+    private data class FilmJson(val posterUrl: String, val title: String, val year: String, val director: String?)
 }

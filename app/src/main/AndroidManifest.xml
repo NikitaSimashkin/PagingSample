@@ -13,7 +13,7 @@
         android:roundIcon="@drawable/ic_launcher_background"
         android:supportsRtl="true"
         android:theme="@style/Theme.PagingSample"
-        android:name=".CatApp"
+        android:name=".FilmApp"
         tools:targetApi="31">
 
         <activity

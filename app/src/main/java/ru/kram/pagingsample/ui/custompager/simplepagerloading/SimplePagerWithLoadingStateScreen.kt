@@ -28,44 +28,45 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.onStart
 import org.koin.androidx.compose.koinViewModel
 import ru.kram.pagerlib.model.LoadingState
-import ru.kram.pagingsample.ui.catlist.CatItem
-import ru.kram.pagingsample.ui.catlist.CatListBaseScreen
-import ru.kram.pagingsample.ui.catlist.model.CatItemData
+import ru.kram.pagingsample.ui.filmlist.FilmItem
+import ru.kram.pagingsample.ui.filmlist.FilmListBaseScreen
+import ru.kram.pagingsample.ui.filmlist.FilmItem
+import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
 import timber.log.Timber
 
 @Composable
 fun SimplePagerWithLoadingStateScreen(
     modifier: Modifier = Modifier,
-    smallCats: Boolean = false,
+    smallFilms: Boolean = false,
 ) {
     val viewModel = koinViewModel<SimplePagerWithLoadingStateViewModel>()
     val state by viewModel.screenState.collectAsStateWithLifecycle()
 
     val scrollState = rememberLazyListState()
 
-    CatListBaseScreen(
+    FilmListBaseScreen(
         infoBlockData = state.infoBlockData,
         pagesBlockData = state.pagesBlockData,
-        onAddOneCats = viewModel::onAddOneCats,
-        onAdd100Cats = viewModel::onAdd100Cats,
-        onClearAllUserCats = viewModel::clearUserCats,
+        onAddOneFilms = viewModel::onAddOneFilms,
+        onAdd100Films = viewModel::onAdd100Films,
+        onClearAllUserFilms = viewModel::clearUserFilms,
         onClearLocalDb = viewModel::clearLocalDb,
         modifier = modifier,
     ) {
         Column(
             Modifier.fillMaxSize()
         ) {
-            val catState = viewModel.catPagingState.collectAsStateWithLifecycle()
+            val filmState = viewModel.filmPagingState.collectAsStateWithLifecycle()
             val offset = remember { mutableIntStateOf(0) }
 
             LaunchedEffect(Unit) {
                 snapshotFlow {
-                    Timber.d("loadingState=${catState.value.loadingState}")
-                    viewModel.updateListInfo(catState.value.cats.size, catState.value.cats)
+                    Timber.d("loadingState=${filmState.value.loadingState}")
+                    viewModel.updateListInfo(filmState.value.films.size, filmState.value.films)
                 }.collect {}
             }
 
-            if (catState.value.loadingState is LoadingState.Start) {
+            if (filmState.value.loadingState is LoadingState.Start) {
                 LoadingIndicator()
             }
 
@@ -76,23 +77,22 @@ fun SimplePagerWithLoadingStateScreen(
                 state = scrollState,
             ) {
                 items(
-                    count = catState.value.cats.size,
-                    key = { index -> catState.value.cats[index].id },
+                    count = filmState.value.films.size,
+                    key = { index -> filmState.value.films[index].id },
                 ) { index ->
-                    val cat = catState.value.cats[index]
-                    CatItem(
-                        catItemData = cat,
-                        onDeleteClick = { viewModel.deleteCat(cat) },
+                    val film = filmState.value.films[index]
+                    FilmItem(
+                        filmItemData = film,
+                        onDeleteClick = { viewModel.deleteFilm(film) },
                         onRenameClick = {},
-                        showOnlyNumber = smallCats,
-                        modifier = if (smallCats) Modifier.height(75.dp) else Modifier
+                        showOnlyNumber = smallFilms,
+                        modifier = if (smallFilms) Modifier.height(75.dp) else Modifier,
+                        index = index,
                     )
                 }
 
-                if (catState.value.loadingState is LoadingState.End || catState.value.loadingState is LoadingState.Both) {
-                    item(
-                        key = "loading end"
-                    ) {
+                if (filmState.value.loadingState is LoadingState.End || filmState.value.loadingState is LoadingState.Both) {
+                    item(key = "loading end") {
                         LoadingIndicator()
                     }
                 }
@@ -100,8 +100,8 @@ fun SimplePagerWithLoadingStateScreen(
 
             PagerObserver(
                 lazyListState = scrollState,
-                onCatVisible = viewModel::onCatVisible,
-                catsState = catState,
+                onFilmVisible = viewModel::onFilmVisible,
+                filmsState = filmState,
                 offset = offset,
             )
         }
@@ -111,11 +111,11 @@ fun SimplePagerWithLoadingStateScreen(
 @Composable
 private fun PagerObserver(
     lazyListState: LazyListState,
-    catsState: State<CatsWithLoadingState>,
-    onCatVisible: (CatItemData?) -> Unit,
+    filmsState: State<FilmsWithLoadingState>,
+    onFilmVisible: (FilmItemData?) -> Unit,
     offset: State<Int>,
 ) {
-    LaunchedEffect(lazyListState, catsState, offset) {
+    LaunchedEffect(lazyListState, filmsState, offset) {
         snapshotFlow {
             val visibleItems = lazyListState.layoutInfo.visibleItemsInfo
             if (visibleItems.isNotEmpty()) {
@@ -128,9 +128,9 @@ private fun PagerObserver(
         }.onStart {
             emit(0)
         }.collect { index ->
-            val state = catsState.value
-            Timber.d("onCatVisible: index=$index, cat=${state.cats.getOrNull(index)?.name}")
-            onCatVisible(state.cats.getOrNull(index))
+            val state = filmsState.value
+            Timber.d("onFilmVisible: index=$index, film=${state.films.getOrNull(index)?.name}")
+            onFilmVisible(state.films.getOrNull(index))
         }
     }
 }

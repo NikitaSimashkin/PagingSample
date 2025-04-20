@@ -5,43 +5,45 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.kram.pagerlib.data.PagedDataSource
 import ru.kram.pagerlib.model.Page
 import ru.kram.pagerlib.model.PageWithIndex
 import ru.kram.pagerlib.pagers.JumpablePager
-import ru.kram.pagingsample.data.CatsRepository
-import ru.kram.pagingsample.data.remote.CatsRemoteDataSource
-import ru.kram.pagingsample.data.remote.model.CatDTO
-import ru.kram.pagingsample.ui.catlist.model.CatItemData
-import ru.kram.pagingsample.ui.catlist.model.CatsScreenState
-import ru.kram.pagingsample.ui.catlist.model.InfoBlockData
-import ru.kram.pagingsample.ui.catlist.model.PagesBlockData
+import ru.kram.pagingsample.data.FilmsRepository
+import ru.kram.pagingsample.domain.FilmDomain
+import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
+import ru.kram.pagingsample.ui.filmlist.model.FilmsScreenState
+import ru.kram.pagingsample.ui.filmlist.model.InfoBlockData
+import ru.kram.pagingsample.ui.filmlist.model.PagesBlockData
 import timber.log.Timber
 
 class JumpablePagerViewModel(
-    private val catsRepository: CatsRepository,
-    private val catsRemoteDataSource: CatsRemoteDataSource,
+    private val filmsRepository: FilmsRepository,
 ): ViewModel() {
 
-    private val pager = JumpablePager<CatDTO, Int>(
+    private val pager = JumpablePager<FilmDomain, Int>(
         pageSize = PAGE_SIZE,
         maxPagesToKeep = 3,
         threshold = PAGE_SIZE / 2,
         initialPage = 0,
-        dataSource = object: PagedDataSource<CatDTO, Int> {
-            override suspend fun loadData(key: Int, pageSize: Int): Page<CatDTO, Int> {
-                Timber.d("start load page: key=$key")
-                val data = catsRemoteDataSource.getCats(limit = pageSize, offset = pageSize * key)
-                Timber.d("end load page: key=$key, size=${data.cats.size + (data.itemsBefore ?: 0) + (data.itemsAfter ?: 0)}")
+        primaryDataSource = object: PagedDataSource<FilmDomain, Int> {
+            override suspend fun loadData(key: Int, pageSize: Int): Page<FilmDomain, Int> {
+                Timber.d("primary start load page: key=$key")
+                val offset = key * pageSize
+                val data = filmsRepository.getFilms(limit = pageSize, offset = pageSize * key, fromNetwork = true)
+                val itemsBefore = offset.coerceAtMost(data.totalCount)
+                val itemsAfter = (data.totalCount - (offset + data.films.size)).coerceAtLeast(0)
                 return Page(
-                    data = data.cats,
+                    data = data.films,
                     prevKey = if (key == 0) null else key - 1,
-                    nextKey = if (data.cats.size < pageSize) null else key + 1,
+                    nextKey = if (data.films.size < pageSize) null else key + 1,
                     key = key,
-                    itemsBefore = data.itemsBefore,
-                    itemsAfter = data.itemsAfter,
+                    itemsBefore = itemsBefore,
+                    itemsAfter = itemsAfter,
                 )
             }
         },
@@ -51,18 +53,17 @@ class JumpablePagerViewModel(
         }
     )
 
-    val cats = pager.data.map { list ->
+    val films = pager.data.map { list ->
         Timber.d("data size=${list.size}")
         list.map {
             if (it == null) {
                 return@map null
             }
-            CatItemData(
+            FilmItemData(
                 id = it.id,
                 imageUrl = it.imageUrl,
                 name = it.name,
-                breed = it.breed,
-                age = it.age,
+                year = it.year,
                 createdAt = it.createdAt,
                 number = it.number,
             )
@@ -75,17 +76,19 @@ class JumpablePagerViewModel(
 
     val screenState = combine(
         pager.currentPage,
-        cats,
-        catsRemoteDataSource.getCatsCount(),
-    ) { currentPage, cats, catsCount ->
-        val (firstPage, lastPage) = if (catsCount == 0) {
+        films,
+        filmsRepository.observeFilmsCount().onEach {
+            Timber.d("observeFilmsCount: $it")
+        },
+    ) { currentPage, films, filmsCount ->
+        val (firstPage, lastPage) = if (filmsCount == 0) {
             0 to 0
         } else {
-            0 to (catsCount / PAGE_SIZE - if (catsCount % PAGE_SIZE == 0) 1 else 0)
+            0 to (filmsCount / PAGE_SIZE - if (filmsCount % PAGE_SIZE == 0) 1 else 0)
         }
-        val itemsInMemory = cats.count { it != null }
+        val itemsInMemory = films.count { it != null }
 
-        CatsScreenState(
+        FilmsScreenState(
             infoBlockData = InfoBlockData(
                 text1Left = "Items in memory: $itemsInMemory",
                 text1Right = null,
@@ -98,12 +101,18 @@ class JumpablePagerViewModel(
                 currentPage = (currentPage ?: -1),
                 firstPage = firstPage,
                 lastPage = lastPage,
-            ),
+            ).apply {
+                println("Nikita $this")
+            },
         )
+    }.onStart {
+        viewModelScope.launch {
+            filmsRepository.updateTotalCount()
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = CatsScreenState.EMPTY,
+        initialValue = FilmsScreenState.EMPTY,
     )
 
     override fun onCleared() {
@@ -111,30 +120,30 @@ class JumpablePagerViewModel(
         pager.destroy()
     }
 
-    fun onAddOneCats() {
+    fun onAddOneFilms() {
         viewModelScope.launch {
-            catsRepository.addCat()
+            filmsRepository.addFilm()
             pager.invalidate()
         }
     }
 
-    fun onAdd100Cats() {
+    fun onAdd100Films() {
         viewModelScope.launch {
-            catsRepository.addCats(100)
+            filmsRepository.addFilms(100)
             pager.invalidate()
         }
     }
 
     fun clearLocalDb() {
         viewModelScope.launch {
-            catsRepository.clearLocal()
+            filmsRepository.clearLocal()
             pager.invalidate()
         }
     }
 
-    fun clearUserCats() {
+    fun clearUserFilms() {
         viewModelScope.launch {
-            catsRepository.clearUserCats()
+            filmsRepository.clearUserFilms()
             pager.invalidate()
         }
     }
@@ -143,9 +152,9 @@ class JumpablePagerViewModel(
         pager.onItemVisible(index)
     }
 
-    fun deleteCat(cat: CatItemData) {
+    fun deleteFilm(film: FilmItemData) {
         viewModelScope.launch {
-            catsRepository.deleteCat(cat.id)
+            filmsRepository.deleteFilm(film.id)
             pager.invalidate()
         }
     }
