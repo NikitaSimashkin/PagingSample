@@ -31,11 +31,10 @@ fun Paging3Screen(
 ) {
     val viewModel = koinViewModel<Paging3ViewModel>()
 
-    val state by viewModel.screenState.collectAsStateWithLifecycle()
+    val infoBlockData by viewModel.screenState.collectAsStateWithLifecycle()
     val scrollState = rememberLazyListState()
     FilmListBaseScreen(
-        infoBlockData = state.infoBlockData,
-        pagesBlockData = state.pagesBlockData,
+        infoBlockData = infoBlockData,
         onAddOneFilms = viewModel::onAddOneFilms,
         onAdd100Films = viewModel::onAdd100Films,
         onClearLocalDb = viewModel::clearLocalDb,

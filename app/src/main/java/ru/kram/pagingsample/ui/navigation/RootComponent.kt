@@ -29,10 +29,6 @@ interface RootComponent {
         data class CustomPagerMenu(
             val component: CustomPagersMenuComponent,
         ) : Child()
-        data class Both(
-            val component: BothComponentImpl,
-            val viewModelStoreOwner: ViewModelStoreOwner,
-        ) : Child()
         data class CustomPager(
             val screen: CustomPagerScreenType,
             val viewModelStoreOwner: ViewModelStoreOwner,
@@ -64,7 +60,6 @@ class RootComponentImpl(
                     componentContext = componentContext,
                     onPagingClick = { navigation.push(Screen.Paging3) },
                     onCustomPagerClick = { navigation.push(Screen.CustomPagerMenu) },
-                    onBothClick = { navigation.push(Screen.Both) },
                 )
             )
             Screen.Paging3 -> {
@@ -78,10 +73,6 @@ class RootComponentImpl(
                 CustomPagersMenuComponentImpl(componentContext) {
                     navigation.push(it.screenObject)
                 }
-            )
-            Screen.Both -> RootComponent.Child.Both(
-                BothComponentImpl(componentContext),
-                componentContext.viewModelStoreOwner(),
             )
             is Screen.CustomPager -> RootComponent.Child.CustomPager(
                 screen = screen.screen,

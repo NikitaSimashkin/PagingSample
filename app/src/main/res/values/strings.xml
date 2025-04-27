@@ -11,12 +11,14 @@
     <string name="delete">Удалить</string>
     <string name="init_server">Инициализировать сервер</string>
 
-    <string name="add_one_film">Добавить 1 кота</string>
-    <string name="add_100_films">Добавить 100 котов</string>
+    <string name="add_one_film">Добавить 1 фильм</string>
+    <string name="add_100_films">Добавить 100 фильмов</string>
     <string name="clear_local_db">Очистить локальную БД</string>
-    <string name="clear_all_user_films">Очистить всех котов</string>
+    <string name="clear_all_user_films">Очистить локальную БД и сервер</string>
+    <string name="films_after">Фильмы после</string>
+    <string name="apply_filter">"apply</string>
 
-    <string name="simple_pager_title">Simple pager</string>
+    <string name="filterable_pager_title">Filterable pager</string>
     <string name="simple_pager_with_loading_state_title">Simple pager with loading state</string>
     <string name="jumpable_pager_title">Jumpable pager</string>
 </resources>

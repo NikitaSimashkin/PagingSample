@@ -1,10 +1,12 @@
-package ru.kram.pagingsample.ui.custompager.jumpablepager
+package ru.kram.pagingsample.ui.custompager.jumpable
 
+import PagesBottomBlock
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -13,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -22,8 +25,6 @@ import org.koin.androidx.compose.koinViewModel
 import ru.kram.pagingsample.ui.filmlist.FilmItem
 import ru.kram.pagingsample.ui.filmlist.FilmItemPlaceholder
 import ru.kram.pagingsample.ui.filmlist.FilmListBaseScreen
-import ru.kram.pagingsample.ui.filmlist.FilmItem
-import ru.kram.pagingsample.ui.filmlist.FilmItemPlaceholder
 import timber.log.Timber
 
 @Composable
@@ -39,23 +40,16 @@ fun JumpablePagerScreen(
 
     FilmListBaseScreen(
         infoBlockData = state.infoBlockData,
-        pagesBlockData = state.pagesBlockData,
         onAddOneFilms = viewModel::onAddOneFilms,
         onAdd100Films = viewModel::onAdd100Films,
         onClearAllUserFilms = viewModel::clearUserFilms,
         onClearLocalDb = viewModel::clearLocalDb,
-        onPageClick = { page ->
-            scope.launch {
-                scrollState.scrollToItem(index = page * JumpablePagerViewModel.PAGE_SIZE)
-            }
-        },
         modifier = modifier,
     ) {
         Column(
             Modifier.fillMaxSize()
         ) {
-            val filmState = viewModel.films.collectAsStateWithLifecycle()
-
+            val films = state.films
             LazyColumn(
                 modifier = Modifier.weight(1f),
                 contentPadding = PaddingValues(8.dp),
@@ -63,10 +57,10 @@ fun JumpablePagerScreen(
                 state = scrollState,
             ) {
                 items(
-                    count = filmState.value.size,
-                    key = { index -> filmState.value[index]?.id ?: index },
+                    count = films.size,
+                    key = { index -> films[index]?.id ?: index },
                 ) { index ->
-                    val film = filmState.value[index]
+                    val film = films[index]
                     if (film == null) {
                         FilmItemPlaceholder(
                             index = index,
@@ -84,6 +78,18 @@ fun JumpablePagerScreen(
                     }
                 }
             }
+
+            PagesBottomBlock(
+                pagesBlockData = state.pagesBlockData,
+                onPageClick = { page ->
+                    scope.launch {
+                        scrollState.scrollToItem(index = page * JumpablePagerViewModel.PAGE_SIZE)
+                    }
+                },
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 8.dp, top = 4.dp)
+            )
 
             PagerObserver(
                 lazyListState = scrollState,

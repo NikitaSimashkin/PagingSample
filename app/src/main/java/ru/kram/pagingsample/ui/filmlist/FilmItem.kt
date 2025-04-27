@@ -45,7 +45,7 @@ fun FilmItem(
     onRenameClick: (filmId: String) -> Unit,
     modifier: Modifier = Modifier,
     showOnlyNumber: Boolean = false,
-    index: Int,
+    index: Int?,
 ) {
     Row(
         modifier = modifier
@@ -75,6 +75,11 @@ fun FilmItem(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Colors.textPrimary,
                 )
+                Text(
+                    text = "${filmItemData.year}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Colors.textPrimary,
+                )
             } else {
                 Text(
                     text = filmItemData.name,
@@ -91,11 +96,13 @@ fun FilmItem(
                     style = MaterialTheme.typography.bodyMedium,
                     color = Colors.textPrimary,
                 )
-                Text(
-                    text = "Index: $index",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = Colors.textPrimary,
-                )
+                if (index != null) {
+                    Text(
+                        text = "Index: $index",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = Colors.textPrimary,
+                    )
+                }
             }
         }
 

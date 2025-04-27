@@ -4,8 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import ru.kram.pagingsample.ui.navigation.Screen
 
 enum class CustomPagerScreenType {
-    SIMPLE_PAGER,
-    SIMPLE_PAGER_WITH_LOADING_STATE,
+    FILTERABLE_PAGER,
     JUMPABLE_PAGER,
 }
 

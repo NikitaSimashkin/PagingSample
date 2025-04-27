@@ -38,7 +38,6 @@ class JumpablePager<T, K>(
 ) : Pager<T, K> {
 
     private val loadedPages = sortedMapOf<Int, Page<T, Int>>()
-    private val emptyPages = mutableSetOf<Int>()
     private val loadingPages = mutableMapOf<Int, Job>()
 
     private val _data = MutableStateFlow<List<T?>>(emptyList())
@@ -91,7 +90,7 @@ class JumpablePager<T, K>(
     private suspend fun processCheckNeedLoad() {
         val pageWithIndex = currentVisiblePageWithIndex.value
 
-        if (dataMutex.withLock { loadedPages.isEmpty() && !emptyPages.contains(initialPage) && !loadingPages.contains(initialPage) && pageWithIndex?.indexInPage == initialPage }) {
+        if (dataMutex.withLock { loadedPages.isEmpty() && !loadingPages.contains(initialPage) && pageWithIndex?.indexInPage == initialPage }) {
             actionDeque.addLast(Action.LoadPage(initialPage))
         } else if (pageWithIndex?.page != null && !needSkipLoading(pageWithIndex.page)) {
             actionDeque.addLast(Action.LoadPage(pageWithIndex.page))
@@ -113,7 +112,6 @@ class JumpablePager<T, K>(
             loadedPages.clear()
             loadingPages.forEach { (_, job) -> job.cancel() }
             loadingPages.clear()
-            emptyPages.clear()
 
             Timber.d("processInvalidate")
         }
@@ -176,9 +174,6 @@ class JumpablePager<T, K>(
 
         dataMutex.withLock {
             loadedPages[page] = pageResult
-            if (pageResult.data.isEmpty()) {
-                emptyPages.add(page)
-            }
         }
 
         return pageResult
@@ -251,14 +246,11 @@ class JumpablePager<T, K>(
     override fun destroy() {
         scope.cancel()
         loadedPages.clear()
-        emptyPages.clear()
         loadingPages.clear()
     }
 
     private suspend fun needSkipLoading(key: Int): Boolean {
-        return dataMutex.withLock {
-            (loadedPages.contains(key) || emptyPages.contains(key) || loadingPages.contains(key))
-        }
+        return dataMutex.withLock { loadedPages.contains(key) || loadingPages.contains(key) }
     }
 
     sealed class Action {

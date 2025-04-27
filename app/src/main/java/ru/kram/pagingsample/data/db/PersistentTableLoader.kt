@@ -1,7 +1,6 @@
 package ru.kram.pagingsample.data.db
 
 import android.content.Context
-import com.github.javafaker.Faker
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CancellationException
@@ -13,7 +12,6 @@ import java.util.UUID
 
 class PersistentTableLoader(
     private val context: Context,
-    private val faker: Faker,
     private val gson: Gson,
     private val filmPersistentDao: FilmPersistentDao,
     private val dispatchers: FilmDispatchers,

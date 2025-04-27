@@ -8,6 +8,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
 import androidx.paging.map
 import androidx.room.InvalidationTracker
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +21,7 @@ import ru.kram.pagingsample.data.db.local.FilmLocalDatabase
 import ru.kram.pagingsample.data.paging.FilmsPagingSource
 import ru.kram.pagingsample.data.paging.FilmsRemoteMediator
 import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
-import ru.kram.pagingsample.ui.filmlist.model.FilmsScreenState
+import ru.kram.pagingsample.ui.filmlist.model.InfoBlockData
 import timber.log.Timber
 
 @OptIn(ExperimentalPagingApi::class)
@@ -31,7 +32,7 @@ class Paging3ViewModel(
     private val filmsRepository: FilmsRepository,
 ) : ViewModel() {
 
-    val screenState = MutableStateFlow(FilmsScreenState.EMPTY)
+    val screenState = MutableStateFlow(InfoBlockData.EMPTY)
 
     private var pagingSource: FilmsPagingSource? = null
     private val observer = object : InvalidationTracker.Observer("FilmLocalEntity") {
@@ -60,6 +61,8 @@ class Paging3ViewModel(
                     createdAt = it.createdAt,
                     number = it.number,
                 )
+            }.filter {
+                it.year > 2003
             }
         }.cachedIn(viewModelScope)
 
@@ -84,9 +87,7 @@ class Paging3ViewModel(
     fun updateListInfo(itemsInMemory: Int, items: ItemSnapshotList<FilmItemData>) {
         screenState.update {
             it.copy(
-                infoBlockData = it.infoBlockData.copy(
-                    text1Left = "Items in memory: $itemsInMemory"
-                )
+                text1Left = "Items in memory: $itemsInMemory"
             )
         }
         Timber.d("updateListInfo: films=${items.joinToString(",") { it?.name ?: "" }}, itemsInMemory=$itemsInMemory")

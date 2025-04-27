@@ -2,23 +2,14 @@ package ru.kram.pagingsample.di
 
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
-import ru.kram.pagingsample.ui.custompager.jumpablepager.JumpablePagerViewModel
-import ru.kram.pagingsample.ui.custompager.simplepager.SimplePagerViewModel
-import ru.kram.pagingsample.ui.custompager.simplepagerloading.SimplePagerWithLoadingStateViewModel
+import ru.kram.pagingsample.ui.custompager.jumpable.JumpablePagerViewModel
+import ru.kram.pagingsample.ui.custompager.filterable.FilterablePagerViewModel
 
 val customPagingModule = module {
 
     viewModel {
-        SimplePagerViewModel(
+        FilterablePagerViewModel(
             filmsRepository = get(),
-            filmsRemoteDataSource = get(),
-        )
-    }
-
-    viewModel {
-        SimplePagerWithLoadingStateViewModel(
-            filmsRepository = get(),
-            filmsRemoteDataSource = get(),
         )
     }
 

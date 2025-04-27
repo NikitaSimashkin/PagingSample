@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -33,13 +34,12 @@ import ru.kram.pagingsample.ui.filmlist.model.PagesBlockData
 @Composable
 fun FilmListBaseScreen(
     infoBlockData: InfoBlockData,
-    pagesBlockData: PagesBlockData,
     modifier: Modifier = Modifier,
     onAddOneFilms: () -> Unit = {},
     onAdd100Films: () -> Unit = {},
     onClearLocalDb: () -> Unit = {},
     onClearAllUserFilms: () -> Unit = {},
-    onPageClick: (Int) -> Unit = {},
+    additionalSettings: @Composable () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
     val isAddFilmsExpanded = remember { mutableStateOf(false) }
@@ -69,14 +69,6 @@ fun FilmListBaseScreen(
         ) {
             content()
         }
-
-        PagesBottomBlock(
-            pagesBlockData = pagesBlockData,
-            onPageClick = onPageClick,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(bottom = 8.dp, top = 4.dp)
-        )
     }
 
     AddFilmsBottomSheet(
@@ -88,11 +80,13 @@ fun FilmListBaseScreen(
         isExpanded = isSettingsExpanded,
         onClearLocalDb = onClearLocalDb,
         onClearAllUserFilms = onClearAllUserFilms,
+        additionalSettings = additionalSettings,
     )
 }
 
 @Composable
 private fun SettingsBottomSheet(
+    additionalSettings: @Composable () -> Unit,
     isExpanded: MutableState<Boolean>,
     onClearLocalDb: () -> Unit,
     onClearAllUserFilms: () -> Unit,
@@ -117,6 +111,9 @@ private fun SettingsBottomSheet(
                 text = stringResource(R.string.clear_all_user_films),
                 onClick = onClearAllUserFilms
             )
+            HorizontalDivider()
+
+            additionalSettings()
         }
     }
 }
@@ -163,11 +160,6 @@ private fun FilmListScreenPreview() {
                 text2Right = "text2Right",
                 text3Left = "text3Left",
                 text3Right = "text3Right",
-            ),
-            pagesBlockData = PagesBlockData(
-                firstPage = 1,
-                lastPage = 10,
-                currentPage = 1
             ),
             content = {},
             onAdd100Films = {},

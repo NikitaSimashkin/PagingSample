@@ -38,15 +38,9 @@ fun CustomPagersMenuScreen(
             verticalArrangement = Arrangement.spacedBy(32.dp),
         ) {
             PrimaryActionButton(
-                text = stringResource(R.string.simple_pager_title),
+                text = stringResource(R.string.filterable_pager_title),
                 modifier = Modifier.fillMaxWidth(),
-                onClick = { component.onPagerScreenSelected(CustomPagerScreenType.SIMPLE_PAGER) }
-            )
-
-            PrimaryActionButton(
-                text = stringResource(R.string.simple_pager_with_loading_state_title),
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { component.onPagerScreenSelected(CustomPagerScreenType.SIMPLE_PAGER_WITH_LOADING_STATE) }
+                onClick = { component.onPagerScreenSelected(CustomPagerScreenType.FILTERABLE_PAGER) }
             )
 
             PrimaryActionButton(

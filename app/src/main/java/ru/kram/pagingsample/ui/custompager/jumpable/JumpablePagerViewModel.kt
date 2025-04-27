@@ -1,4 +1,4 @@
-package ru.kram.pagingsample.ui.custompager.jumpablepager
+package ru.kram.pagingsample.ui.custompager.jumpable
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +16,6 @@ import ru.kram.pagerlib.pagers.JumpablePager
 import ru.kram.pagingsample.data.FilmsRepository
 import ru.kram.pagingsample.domain.FilmDomain
 import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
-import ru.kram.pagingsample.ui.filmlist.model.FilmsScreenState
 import ru.kram.pagingsample.ui.filmlist.model.InfoBlockData
 import ru.kram.pagingsample.ui.filmlist.model.PagesBlockData
 import timber.log.Timber
@@ -53,7 +52,7 @@ class JumpablePagerViewModel(
         }
     )
 
-    val films = pager.data.map { list ->
+    private val films = pager.data.map { list ->
         Timber.d("data size=${list.size}")
         list.map {
             if (it == null) {
@@ -88,7 +87,7 @@ class JumpablePagerViewModel(
         }
         val itemsInMemory = films.count { it != null }
 
-        FilmsScreenState(
+        JumpableScreenState(
             infoBlockData = InfoBlockData(
                 text1Left = "Items in memory: $itemsInMemory",
                 text1Right = null,
@@ -101,9 +100,9 @@ class JumpablePagerViewModel(
                 currentPage = (currentPage ?: -1),
                 firstPage = firstPage,
                 lastPage = lastPage,
-            ).apply {
-                println("Nikita $this")
-            },
+            ),
+            films = films,
+            page = currentPage,
         )
     }.onStart {
         viewModelScope.launch {
@@ -112,7 +111,7 @@ class JumpablePagerViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = FilmsScreenState.EMPTY,
+        initialValue = JumpableScreenState.EMPTY,
     )
 
     override fun onCleared() {

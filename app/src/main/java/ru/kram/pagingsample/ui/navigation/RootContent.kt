@@ -4,11 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.arkivanov.decompose.extensions.compose.jetpack.stack.Children
-import ru.kram.pagingsample.ui.filmlist.both.BothScreen
 import ru.kram.pagingsample.ui.filmlist.custompagermenu.CustomPagersMenuScreen
-import ru.kram.pagingsample.ui.custompager.simplepager.SimplePagerScreen
-import ru.kram.pagingsample.ui.custompager.jumpablepager.JumpablePagerScreen
-import ru.kram.pagingsample.ui.custompager.simplepagerloading.SimplePagerWithLoadingStateScreen
+import ru.kram.pagingsample.ui.custompager.filterable.FilterablePagerScreen
+import ru.kram.pagingsample.ui.custompager.jumpable.JumpablePagerScreen
 import ru.kram.pagingsample.ui.menu.MenuScreen
 import ru.kram.pagingsample.ui.navigation.menu.CustomPagerScreenType
 import ru.kram.pagingsample.ui.paging3.Paging3Screen
@@ -30,24 +28,13 @@ fun RootContent(component: RootComponent) {
             is RootComponent.Child.CustomPagerMenu -> {
                 CustomPagersMenuScreen(instance.component)
             }
-            is RootComponent.Child.Both -> {
-                CompositionLocalProvider(
-                    LocalViewModelStoreOwner provides instance.viewModelStoreOwner
-                ) {
-                    BothScreen()
-                }
-            }
             is RootComponent.Child.CustomPager -> {
                 CompositionLocalProvider(
                     LocalViewModelStoreOwner provides instance.viewModelStoreOwner
                 ) {
                     when (instance.screen) {
-                        CustomPagerScreenType.SIMPLE_PAGER -> {
-                            SimplePagerScreen()
-                        }
-
-                        CustomPagerScreenType.SIMPLE_PAGER_WITH_LOADING_STATE -> {
-                            SimplePagerWithLoadingStateScreen()
+                        CustomPagerScreenType.FILTERABLE_PAGER -> {
+                            FilterablePagerScreen()
                         }
 
                         CustomPagerScreenType.JUMPABLE_PAGER -> {

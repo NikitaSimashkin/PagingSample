@@ -73,7 +73,6 @@ dependencies {
     implementation(libs.bundles.room)
     ksp(libs.room.compiler)
 
-    implementation(libs.faker)
     implementation(libs.gson)
     implementation(libs.timber)
     implementation(libs.koin)

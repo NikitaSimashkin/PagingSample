@@ -1,34 +1,41 @@
-package ru.kram.pagingsample.ui.custompager.simplepager
+package ru.kram.pagingsample.ui.custompager.filterable
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.kram.pagerlib.data.PagedDataSource
 import ru.kram.pagerlib.model.Page
-import ru.kram.pagerlib.pagers.SimplePager
+import ru.kram.pagerlib.pagers.FilterablePager
 import ru.kram.pagingsample.data.FilmsRepository
-import ru.kram.pagingsample.data.remote.FilmsRemoteDataSource
 import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
-import ru.kram.pagingsample.ui.filmlist.model.FilmsScreenState
+import ru.kram.pagingsample.ui.filmlist.model.InfoBlockData
 import timber.log.Timber
 
-class SimplePagerViewModel(
+class FilterablePagerViewModel(
     private val filmsRepository: FilmsRepository,
-    private val filmsRemoteDataSource: FilmsRemoteDataSource,
 ): ViewModel() {
 
-    val screenState = MutableStateFlow(FilmsScreenState.EMPTY)
+    private val filterYear = MutableStateFlow<Int>(2003)
 
-    private val pager = SimplePager(
+    private val pager = FilterablePager(
         pageSize = PAGE_SIZE,
-        maxPagesToKeep = 3,
+        maxItemsToKeep = PAGE_SIZE * 5,
         threshold = PAGE_SIZE / 2,
         initialPage = 0,
-        dataSource = object: PagedDataSource<FilmItemData, Int> {
+        primaryDataSource = object: PagedDataSource<FilmItemData, Int> {
             override suspend fun loadData(key: Int, pageSize: Int): Page<FilmItemData, Int> {
-                val items = filmsRemoteDataSource.getFilms(limit = pageSize, offset = pageSize * key).films.mapIndexed { index, it ->
+                val items = filmsRepository.getFilms(
+                    limit = pageSize,
+                    offset = pageSize * key,
+                    fromNetwork = true
+                ).films.mapIndexed { _, it ->
                     FilmItemData(
                         id = it.id,
                         imageUrl = it.imageUrl,
@@ -47,23 +54,45 @@ class SimplePagerViewModel(
                 )
             }
         },
+        minItemsToLoad = PAGE_SIZE * 3,
+    ).apply {
+        updateFilterPredicate { item ->
+            item.year > 2003
+        }
+    }
+
+    val filmPagingState = combine(
+        pager.data, pager.loadingState, filterYear,
+    ) { films, loadingState, filterYear ->
+        FilterableFilmsState(
+            films = films,
+            loadingState = loadingState,
+            filterYear = filterYear,
+            infoBlockData = InfoBlockData(
+                text1Left = "Items in memory: ${films.size}",
+                text1Right = "Filter year: $filterYear",
+                text2Left = "Loading state: $loadingState",
+                text2Right = null,
+                text3Left = null,
+                text3Right = null,
+            ),
+        )
+    }.stateIn(
+        scope = viewModelScope,
+        initialValue = FilterableFilmsState.EMPTY,
+        started = SharingStarted.Lazily,
     )
 
-    val films = pager.data
+    init {
+        filterYear.onEach {
+            pager.updateFilterPredicate { item ->
+                item.year > it
+            }
+        }.launchIn(viewModelScope)
+    }
 
     override fun onCleared() {
         Timber.d("onCleared")
-    }
-
-    fun updateListInfo(itemsInMemory: Int, items: List<FilmItemData?>) {
-        screenState.update {
-            it.copy(
-                infoBlockData = it.infoBlockData.copy(
-                    text1Left = "Items in memory: $itemsInMemory"
-                )
-            )
-        }
-        Timber.d("updateListInfo: films=${items.joinToString(",") { it?.name.orEmpty() }}, itemsInMemory=$itemsInMemory")
     }
 
     fun onAddOneFilms() {
@@ -94,9 +123,9 @@ class SimplePagerViewModel(
         }
     }
 
-    fun onItemVisible(index: Int) {
+    fun onItemVisible(item: FilmItemData?) {
         viewModelScope.launch {
-            pager.onItemVisible(index)
+            pager.onItemVisible(item)
         }
     }
 
@@ -107,7 +136,13 @@ class SimplePagerViewModel(
         }
     }
 
+    fun applyYearFilter(year: Int?) {
+        viewModelScope.launch {
+            filterYear.update { year ?: 0 }
+        }
+    }
+
     companion object {
-        private const val PAGE_SIZE = 20
+        private const val PAGE_SIZE = 10
     }
 }

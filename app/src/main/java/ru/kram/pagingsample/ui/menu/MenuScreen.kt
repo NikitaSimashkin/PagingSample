@@ -63,12 +63,6 @@ fun MenuScreen(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { component.onMenuItemSelected(MenuComponent.MenuItem.CUSTOMPAGER) }
             )
-
-            PrimaryActionButton(
-                text = stringResource(R.string.both_title),
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { component.onMenuItemSelected(MenuComponent.MenuItem.BOTH) }
-            )
         }
     }
 
