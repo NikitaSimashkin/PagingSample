@@ -26,7 +26,7 @@ class FilterablePagerViewModel(
 
     private val pager = FilterablePager(
         pageSize = PAGE_SIZE,
-        maxItemsToKeep = PAGE_SIZE * 5,
+        maxItemsToKeep = PAGE_SIZE * 3,
         threshold = PAGE_SIZE / 2,
         initialPage = 0,
         primaryDataSource = object: PagedDataSource<FilmItemData, Int> {

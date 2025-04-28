@@ -1,11 +1,9 @@
 package ru.kram.pagerlib.pagers
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,7 +13,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
 import ru.kram.pagerlib.HasLoadingState
 import ru.kram.pagerlib.Pager
 import ru.kram.pagerlib.data.PagedDataSource
@@ -24,7 +21,6 @@ import ru.kram.pagerlib.model.Page
 import ru.kram.pagerlib.util.PageHelper
 import timber.log.Timber
 import kotlin.coroutines.coroutineContext
-import kotlin.math.abs
 
 class FilterablePager<T>(
     private val primaryDataSource: PagedDataSource<T, Int>,
@@ -108,7 +104,11 @@ class FilterablePager<T>(
         Timber.d("processInvalidate")
         val currentPage = dataMutex.withLock {
             val lastVisibleItem = lastVisibleItem.value
-            val page = findPageForItem(lastVisibleItem)
+            val page = findPageForItem(
+                pages = pageHelper.getPages(),
+                itemsToPage = pageHelper.getItemsByPage(),
+                item = lastVisibleItem
+            )
             loadingPages.values.forEach { it.cancel() }
             loadingPages.clear()
             pageHelper.clear()
@@ -122,31 +122,29 @@ class FilterablePager<T>(
             return
         }
 
-        coroutineScope {
-            val pagesToLoad = ArrayDeque<Int>()
-            pagesToLoad.add(currentPage.key)
+        var loadedCount = 0
 
-            val loadedKeys = mutableSetOf<Int>()
+        val centerPage = loadPage(currentPage.key)
+        loadedCount += centerPage.data.size
 
-            while (true) {
-                if (pagesToLoad.isEmpty()) break
-                val pageKey = pagesToLoad.removeFirst()
-                if (loadedKeys.contains(pageKey)) continue
-                loadedKeys.add(pageKey)
+        var prevKey = centerPage.prevKey
+        var nextKey = centerPage.nextKey
 
-                val page = loadPage(pageKey)
-
-                page.prevKey?.let { pagesToLoad.addLast(it) }
-                page.nextKey?.let { pagesToLoad.addLast(it) }
-
-                val totalItems = dataMutex.withLock {
-                    pageHelper.getPages().sumOf { it.data.size }
-                }
-
-                if (totalItems >= minItemsToLoad) break
+        while (loadedCount < minItemsToLoad && (prevKey != null || nextKey != null)) {
+            if (prevKey != null) {
+                val page = loadPage(prevKey)
+                loadedCount += page.data.size
+                prevKey = page.prevKey
             }
-        }
 
+            if (nextKey != null) {
+                val page = loadPage(nextKey)
+                loadedCount += page.data.size
+                nextKey = page.nextKey
+            }
+
+            if (loadedCount >= minItemsToLoad) break
+        }
         onNewPageLoaded()
     }
 
@@ -161,29 +159,39 @@ class FilterablePager<T>(
 
     private suspend fun processRemovePages() {
         dataMutex.withLock {
-            val pages = pageHelper.getPages().toList()
+            val pages = pageHelper.getPages().toMutableList()
+            val itemsByPage = pageHelper.getItemsByPage()
             val totalItems = pages.sumOf { it.data.size }
-            if (totalItems <= maxItemsToKeep) return@withLock
+            var toRemove = totalItems - maxItemsToKeep
+            if (toRemove <= 0) return@withLock
 
-            val currentItem = lastVisibleItem.value
-            val currentList = pages.flatMap { it.data }
+            var flatList = pages.flatMap { it.data }
+            val current = lastVisibleItem.value
+            val currentIdx = current?.let { flatList.indexOfFirst { it == current } } ?: -1
+            if (currentIdx == -1) return@withLock
 
-            val currentIndex = currentList.indexOfFirst { it == currentItem }
-            val currentMappedItem = currentList.getOrNull(currentIndex)
-            val currentPageKey = findPageForItem(currentMappedItem)?.key ?: return
+            while (toRemove > 0 && pages.isNotEmpty()) {
+                val (farItem, isStart) = if (currentIdx >= flatList.lastIndex - currentIdx) {
+                    flatList.first() to true
+                } else {
+                    flatList.last() to false
+                }
+                val farPage = findPageForItem(pages, itemsByPage, farItem) ?: break
 
-            var itemsToRemove = totalItems - maxItemsToKeep
+                val pagesToDelete = if (isStart) {
+                    pages.filter { it.key <= farPage.key }
+                } else {
+                    pages.filter { it.key >= farPage.key }
+                }
 
-            val pagesSortedByDistance = pages.sortedByDescending { page -> abs(page.key - currentPageKey) }
-            Timber.d("processRemovePages: pagesSortedByDistance=${pagesSortedByDistance.joinToString(",") { it.key.toString() }}")
+                for (page in pagesToDelete) {
+                    pageHelper.removePage(page)
+                    loadingPages.remove(page.key)?.cancel()
+                    toRemove -= page.data.size
 
-            for (page in pagesSortedByDistance) {
-                pageHelper.removePage(page)
-                loadingPages.remove(page.key)?.cancel()
-                itemsToRemove -= page.data.size
-                Timber.d("processRemovePages: removed page key=${page.key}, distance=${abs(page.key - currentPageKey)}")
-
-                if (itemsToRemove <= 0) break
+                    pages.remove(page)
+                    flatList = pages.flatMap { it.data }
+                }
             }
         }
     }
@@ -216,9 +224,11 @@ class FilterablePager<T>(
         }
     }
 
-    private suspend fun findPageForItem(item: T?): Page<T, Int>? {
-        val pages = pageHelper.getPages()
-        val itemsToPage = pageHelper.getItemsByPage()
+    private fun findPageForItem(
+        pages: List<Page<T, Int>>,
+        itemsToPage: Map<T, Int>,
+        item: T?
+    ): Page<T, Int>? {
         return pages.firstOrNull { page ->
             itemsToPage[item] == page.key
         }
