@@ -16,10 +16,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.kram.pagingsample.data.FilmsRepository
 import ru.kram.pagingsample.data.db.local.FilmLocalDatabase
 import ru.kram.pagingsample.data.paging.FilmsPagingSource
 import ru.kram.pagingsample.data.paging.FilmsRemoteMediator
+import ru.kram.pagingsample.domain.FilmsRepository
 import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
 import ru.kram.pagingsample.ui.filmlist.model.InfoBlockData
 import timber.log.Timber
@@ -57,7 +57,7 @@ class Paging3ViewModel(
                     id = it.id,
                     imageUrl = it.imageUrl,
                     name = it.name,
-                    year = it.age,
+                    year = it.year,
                     createdAt = it.createdAt,
                     number = it.number,
                 )

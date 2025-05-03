@@ -11,14 +11,13 @@ val paging3Module = module {
     single {
         FilmsPagingSource.Factory(
             basePageSize = Paging3ViewModel.PAGE_SIZE,
-            filmLocalDao = get(),
+            filmsRepository = get(),
         )
     }
 
     single {
         FilmsRemoteMediator(
-            filmLocalDao = get(),
-            filmsRemoteDataSource = get(),
+            filmsRepository = get(),
             basePageSize = Paging3ViewModel.PAGE_SIZE
         )
     }

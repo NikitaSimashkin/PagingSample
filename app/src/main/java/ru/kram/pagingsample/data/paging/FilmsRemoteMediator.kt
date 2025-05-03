@@ -8,18 +8,19 @@ import kotlinx.coroutines.CancellationException
 import ru.kram.pagingsample.data.db.local.FilmLocalDao
 import ru.kram.pagingsample.data.db.local.FilmLocalEntity
 import ru.kram.pagingsample.data.remote.FilmsRemoteDataSource
+import ru.kram.pagingsample.domain.FilmDomain
+import ru.kram.pagingsample.domain.FilmsRepository
 import timber.log.Timber
 
 @OptIn(ExperimentalPagingApi::class)
 class FilmsRemoteMediator(
     private val basePageSize: Int,
-    private val filmLocalDao: FilmLocalDao,
-    private val filmsRemoteDataSource: FilmsRemoteDataSource,
-) : RemoteMediator<Int, FilmLocalEntity>() {
+    private val filmsRepository: FilmsRepository,
+) : RemoteMediator<Int, FilmDomain>() {
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, FilmLocalEntity>
+        state: PagingState<Int, FilmDomain>
     ): MediatorResult {
         return try {
             val loadSize = basePageSize
@@ -36,23 +37,11 @@ class FilmsRemoteMediator(
                 LoadType.APPEND -> currentPage + 1
             }
 
-            val response = filmsRemoteDataSource.getFilms(
+            val response = filmsRepository.getFilms(
                 offset = page * loadSize,
-                limit = loadSize
+                limit = loadSize,
+                fromNetwork = true,
             ).films
-
-            filmLocalDao.insertAll(
-                response.map {
-                    FilmLocalEntity(
-                        id = it.id,
-                        imageUrl = it.imageUrl,
-                        name = it.name,
-                        age = it.year,
-                        createdAt = it.createdAt,
-                        number = it.number,
-                    )
-                }
-            )
 
             Timber.d("load: response.size=${response.size}")
 

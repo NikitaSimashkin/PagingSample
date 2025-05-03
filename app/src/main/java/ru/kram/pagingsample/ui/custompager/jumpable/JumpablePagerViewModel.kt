@@ -13,8 +13,8 @@ import ru.kram.pagerlib.data.PagedDataSource
 import ru.kram.pagerlib.model.Page
 import ru.kram.pagerlib.model.PageWithIndex
 import ru.kram.pagerlib.pagers.JumpablePager
-import ru.kram.pagingsample.data.FilmsRepository
 import ru.kram.pagingsample.domain.FilmDomain
+import ru.kram.pagingsample.domain.FilmsRepository
 import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
 import ru.kram.pagingsample.ui.filmlist.model.InfoBlockData
 import ru.kram.pagingsample.ui.filmlist.model.PagesBlockData

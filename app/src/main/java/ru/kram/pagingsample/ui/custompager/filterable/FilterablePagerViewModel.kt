@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import ru.kram.pagerlib.data.PagedDataSource
 import ru.kram.pagerlib.model.Page
 import ru.kram.pagerlib.pagers.FilterablePager
-import ru.kram.pagingsample.data.FilmsRepository
+import ru.kram.pagingsample.domain.FilmsRepository
 import ru.kram.pagingsample.ui.filmlist.model.FilmItemData
 import ru.kram.pagingsample.ui.filmlist.model.InfoBlockData
 import timber.log.Timber
